@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anexo Residencial UC Christus</title>
+
+<style>
+body { font-family: 'Segoe UI', sans-serif; background:#eef2f7; margin:0; padding:10px; }
+.container { max-width:500px; margin:auto; background:white; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,.1); overflow:hidden; }
+.header { background:#007bff; color:white; padding:20px; text-align:center; }
+.nav { display:flex; }
+.nav div { flex:1; padding:10px; text-align:center; cursor:pointer; font-weight:bold; font-size:12px; }
+.nav div.active { background:white; color:#007bff; border-bottom:3px solid #007bff; }
+.section { display:none; padding:20px; }
+.section.active { display:block; }
+input, button { width:100%; padding:10px; margin:8px 0; border-radius:6px; border:1px solid #ccc; }
+button { background:#28a745; color:white; font-weight:bold; border:none; }
+.badge { background:#dc3545; color:white; padding:5px 10px; border-radius:20px; font-size:12px; }
+.lang { text-align:right; font-size:12px; }
+hr { border:none; border-top:1px solid #eee; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h2>Anexo Residencial UC Christus</h2>
+<small>Unidad de Recuperación y Regaloneo</small>
+</div>
+
+<div class="lang">
+<button onclick="setLang('es')">ES</button>
+<button onclick="setLang('en')">EN</button>
+</div>
+
+<div class="nav">
+<div class="active" onclick="openTab('paciente')">PACIENTE</div>
+<div onclick="openTab('medico')">MÉDICO</div>
+<div onclick="openTab('historial')">HISTORIAL</div>
+</div>
+
+<!-- PACIENTE -->
+<div id="paciente" class="section active">
+<h3 id="tPaciente">Acceso Paciente</h3>
+
+<div id="login">
+<input id="rut" placeholder="RUT">
+<input id="fecha" type="date">
+<button onclick="login()">Ingresar</button>
+</div>
+
+<div id="reserva" style="display:none">
+<p><strong id="cupos"></strong></p>
+<input id="nombre" placeholder="Nombre del visitante">
+<button onclick="reservar()">Reservar hora</button>
+<p id="mensaje"></p>
+</div>
+</div>
+
+<!-- MÉDICO -->
+<div id="medico" class="section">
+<h3>Médico Tratante</h3>
+<p><strong>Dr. Hazelnut Teo</strong></p>
+<p>Especialista en Cardiología Emocional y Cariñología Avanzada.</p>
+<p><strong>Director del Anexo:</strong> Papá</p>
+<p><strong>Soporte Técnico:</strong> Carboncito & Negranieves</p>
+<p><strong>Contacto Dirección:</strong> +56 9 XXXXXXXX</p>
+</div>
+
+<!-- HISTORIAL -->
+<div id="historial" class="section">
+<h3>Historial de Visitas (Hoy)</h3>
+<ul id="lista"></ul>
+</div>
+
+</div>
+
+<script>
+const PACIENTE_RUT = "12.345.678-9";
+const PACIENTE_FECHA = "1945-06-20";
+const MAX_VISITAS = 3;
+
+function hoy() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function visitasHoy() {
+  const data = JSON.parse(localStorage.getItem("visitas") || "[]");
+  return data.filter(v => v.fecha === hoy());
+}
+
+function actualizarCupos() {
+  const restantes = MAX_VISITAS - visitasHoy().length;
+  document.getElementById("cupos").innerHTML =
+    restantes > 0
+    ? `Cupos disponibles hoy: ${restantes}`
+    : `<span class="badge">Cupos llenos</span>`;
+}
+
+function login() {
+  if (
+    document.getElementById("rut").value === PACIENTE_RUT &&
+    document.getElementById("fecha").value === PACIENTE_FECHA
+  ) {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("reserva").style.display = "block";
+    actualizarCupos();
+    cargarHistorial();
+  } else {
+    alert("Datos incorrectos");
+  }
+}
+
+function reservar() {
+  const nombre = document.getElementById("nombre").value;
+  if (!nombre) return alert("Ingrese nombre");
+
+  const visitas = visitasHoy();
+  if (visitas.length >= MAX_VISITAS) {
+    document.getElementById("mensaje").innerText = "Cupos llenos hoy";
+    return;
+  }
+
+  const data = JSON.parse(localStorage.getItem("visitas") || "[]");
+  data.push({ nombre, fecha: hoy(), hora: new Date().toLocaleTimeString() });
+  localStorage.setItem("visitas", JSON.stringify(data));
+
+  document.getElementById("mensaje").innerText = "Reserva confirmada";
+  actualizarCupos();
+  cargarHistorial();
+}
+
+function cargarHistorial() {
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+  visitasHoy().forEach(v => {
+    const li = document.createElement("li");
+    li.innerText = `${v.nombre} – ${v.hora}`;
+    lista.appendChild(li);
+  });
+}
+
+function openTab(id) {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".nav div").forEach(n => n.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  event.target.classList.add("active");
+}
+
+function setLang(lang) {
+  if (lang === "en") {
+    document.getElementById("tPaciente").innerText = "Patient Access";
+  } else {
+    document.getElementById("tPaciente").innerText = "Acceso Paciente";
+  }
+}
+</script>
+
+</body>
+</html>
