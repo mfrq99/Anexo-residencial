@@ -178,14 +178,17 @@ iframe {
     </div>
 
     <hr>
-    <h4>Medicación Actual</h4>
-    <div class="info-box">
-      <ul>
-        <li>Languetazos terapéuticos a demanda</li>
-        <li>Té caliente matinal y vespertino</li>
-        <li>Abrazos controlados</li>
-      </ul>
-    </div>
+    <h4>💊 Medicación Actual</h4>
+    <ul id="verMedicacion"></ul>
+    
+    <hr>
+    <h4>🧪 Próximos Controles y Exámenes</h4>
+    <ul id="verExamenes"></ul>
+    
+    <hr>
+    <h4>📝 Indicaciones Médicas Vigentes</h4>
+    <ul id="verIndicaciones"></ul>
+
 
     <hr>
     <h4>Reserva de Visitas</h4>
@@ -268,16 +271,22 @@ const PACIENTE_FECHA = "1951-01-06";
 
 
 function login() {
-  if (
-    document.getElementById("rut").value === PACIENTE_RUT &&
-    document.getElementById("fecha").value === PACIENTE_FECHA
-  ) {
+  const rut = document.getElementById("rut").value;
+  const fecha = document.getElementById("fecha").value;
+
+  if (rut === PACIENTE_RUT && fecha === PACIENTE_FECHA) {
     document.getElementById("login").style.display = "none";
     document.getElementById("ficha").style.display = "block";
+    document.getElementById("reserva").style.display = "block";
+
+    mostrarMedicacionPaciente();
+    mostrarExamenesPaciente();
+    mostrarIndicacionesPaciente();
   } else {
-    alert("Datos incorrectos");
+    alert("Datos del paciente incorrectos");
   }
 }
+
 
 function toggleMedico() {
   const m = document.getElementById("infoMedico");
@@ -414,6 +423,70 @@ function eliminarIndicacion(i) {
   data.splice(i, 1);
   localStorage.setItem("indicaciones", JSON.stringify(data));
   cargarIndicaciones();
+}
+/* ===== VISUALIZACIÓN PACIENTE ===== */
+
+function mostrarMedicacionPaciente() {
+  const lista = document.getElementById("verMedicacion");
+  lista.innerHTML = "";
+
+  const data = JSON.parse(localStorage.getItem("medicacion") || "[]");
+
+  if (data.length === 0) {
+    lista.innerHTML = "<li>No hay medicación registrada.</li>";
+    return;
+  }
+
+  data.forEach(m => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <strong>${m.nombre}</strong><br>
+      Dosis: ${m.dosis}<br>
+      Horario: ${m.horario}<br>
+      <small>${m.obs}</small>
+    `;
+    lista.appendChild(li);
+  });
+}
+
+function mostrarExamenesPaciente() {
+  const lista = document.getElementById("verExamenes");
+  lista.innerHTML = "";
+
+  const data = JSON.parse(localStorage.getItem("examenes") || "[]");
+
+  if (data.length === 0) {
+    lista.innerHTML = "<li>No hay controles programados.</li>";
+    return;
+  }
+
+  data.forEach(e => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      📅 <strong>${e.fecha}</strong><br>
+      ${e.tipo}<br>
+      <small>${e.nota}</small>
+    `;
+    lista.appendChild(li);
+  });
+}
+
+function mostrarIndicacionesPaciente() {
+  const lista = document.getElementById("verIndicaciones");
+  lista.innerHTML = "";
+
+  const data = JSON.parse(localStorage.getItem("indicaciones") || "[]");
+
+  if (data.length === 0) {
+    lista.innerHTML = "<li>No hay indicaciones activas.</li>";
+    return;
+  }
+
+  data.forEach(i => {
+    const li = document.createElement("li");
+    li.innerText = i;
+    lista.appendChild(li);
+  });
 }
 
 </script>
