@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anexo Residencial UC Christus</title>
+
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
@@ -17,11 +24,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 </script>
-
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anexo Residencial UC Christus</title>
 
 <style>
 body {
@@ -69,7 +71,7 @@ body {
 .section.active {
   display:block;
 }
-input, button {
+input, textarea, button {
   width:100%;
   padding:10px;
   margin:8px 0;
@@ -81,21 +83,6 @@ button {
   color:white;
   font-weight:bold;
   border:none;
-}
-.badge {
-  background:#dc3545;
-  color:white;
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:12px;
-}
-hr {
-  border:none;
-  border-top:1px solid #eee;
-  margin:15px 0;
-}
-ul {
-  padding-left:20px;
 }
 .help {
   font-size:12px;
@@ -113,6 +100,19 @@ iframe {
   border:0;
   border-radius:10px;
 }
+img.avatar {
+  width:60px;
+  height:60px;
+  border-radius:50%;
+}
+hr {
+  border:none;
+  border-top:1px solid #eee;
+  margin:15px 0;
+}
+ul {
+  padding-left:20px;
+}
 </style>
 </head>
 
@@ -120,11 +120,13 @@ iframe {
 
 <div class="container">
 
+<!-- HEADER -->
 <div class="header">
   <h2>Anexo Residencial UC Christus</h2>
   <small>Unidad de Recuperación y Regaloneo</small>
 </div>
 
+<!-- NAV -->
 <div class="nav">
   <div class="active" onclick="openTab('inicio', this)">RESIDENCIA</div>
   <div onclick="openTab('paciente', this)">PACIENTE</div>
@@ -137,103 +139,103 @@ iframe {
   <h3>Descripción de la Residencia</h3>
   <p>
     Unidad de recuperación domiciliaria post-alta, orientada al bienestar,
-    estabilidad emocional y cuidado integral de la paciente.
+    estabilidad clínica, emocional y cuidado integral de la paciente.
   </p>
-  <p style="background:#fff3cd;padding:10px;border-radius:6px;">
+  <div class="info-box">
     👉 Para reservar visitas debe ingresar a la sección <strong>Paciente</strong>.
-  </p>
+  </div>
 </div>
 
 <!-- PACIENTE -->
 <div id="paciente" class="section">
 
-  <h3>Acceso Paciente</h3>
+<h3>Acceso Paciente</h3>
 
-  <div id="login">
-    <input id="rut" placeholder="RUT del paciente">
-    <div class="help">Ingrese RUT sin puntos y con guion</div>
-    <input id="fecha" type="date">
-    <button onclick="login()">Ingresar</button>
+<div id="login">
+  <input id="rut" placeholder="RUT del paciente">
+  <div class="help">Ingrese RUT sin puntos y con guion</div>
+  <input id="fecha" type="date">
+  <button onclick="login()">Ingresar</button>
+</div>
+
+<div id="ficha" style="display:none">
+
+<hr>
+<h4>Ficha Clínica</h4>
+
+<div class="info-box" style="display:flex;gap:10px;align-items:center;">
+  <img src="images/paciente.jpg" class="avatar">
+  <div>
+    <strong>Margarita De Las Mercedes Arriaza Zamorano</strong><br>
+    <small>RUT: 6.921.444-4</small>
   </div>
+</div>
 
-  <div id="ficha" style="display:none">
+<p><strong>Nacimiento:</strong> 06-01-1951</p>
+<p><strong>Ingreso Residencial:</strong> 01-02-2026</p>
+<p><strong>Unidad:</strong> Recuperación Cardíaca Domiciliaria</p>
 
-    <hr>
-    <h4>Ficha Clínica</h4>
+<hr>
+<h4>Diagnóstico</h4>
+<div class="info-box">
+  Recuperación post-alta cardíaca en ambiente familiar controlado.
+</div>
 
-    <div class="info-box" style="display:flex;gap:10px;align-items:center;">
-      <img src="images/paciente.jpg" style="width:60px;height:60px;border-radius:50%;">
-      <div>
-        <strong>Margarita De Las Mercedes Arriaza Zamorano</strong><br>
-        <small>RUT: 6.921.444-4</small>
-      </div>
-    </div>
+<hr>
+<h4>Médico Tratante</h4>
 
-    <p><strong>Nacimiento:</strong> 06-01-1951</p>
-    <p><strong>Ingreso:</strong> 01-02-2026</p>
-    <p><strong>Unidad:</strong> Recuperación Cardíaca Domiciliaria</p>
-
-    <hr>
-    <h4>Diagnóstico</h4>
-    <div class="info-box">
-      Recuperación post-alta cardíaca en ambiente familiar controlado.
-    </div>
-
-    <hr>
-    <h4>Médico Tratante</h4>
-
-    <div class="info-box" onclick="toggleMedico()" style="cursor:pointer;display:flex;gap:10px;">
-      <img src="images/doctor-teo.jpg" style="width:60px;height:60px;border-radius:50%;">
-      <div>
-        <strong>Dr. Hazelnut Teo</strong><br>
-        <small>Cardiología Emocional</small>
-      </div>
-    </div>
-
-    <div id="infoMedico" class="info-box" style="display:none;">
-      Especialista en contención emocional y regaloneo terapéutico.
-    </div>
-
-    <hr>
-    <ul id="listaMedicacion"></ul>
-
-    <hr>
-    <h4>Reserva de Visitas</h4>
-    <button onclick="mostrarCalendly()">Reservar visita</button>
-
-    <div id="calendly" style="display:none;margin-top:15px;">
-      <iframe src="https://calendly.com/mfrq89/30min" height="600"></iframe>
-    </div>
-
+<div class="info-box" onclick="toggleMedico()" style="cursor:pointer;display:flex;gap:10px;">
+  <img src="images/doctor-teo.jpg" class="avatar">
+  <div>
+    <strong>Dr. Hazelnut Teo</strong><br>
+    <small>Especialista en cariño</small>
   </div>
+</div>
+
+<div id="infoMedico" class="info-box" style="display:none;">
+  Cardiología emocional, contención afectiva y regaloneo terapéutico avanzado.
+</div>
+
+<hr>
+<h4>Medicación actual</h4>
+<ul id="listaMedicacion"></ul>
+
+<hr>
+<h4>Reserva de Visitas</h4>
+<button onclick="mostrarCalendly()">Reservar visita</button>
+
+<div id="calendly" style="display:none;margin-top:15px;">
+  <iframe src="https://calendly.com/mfrq89/30min" height="600"></iframe>
+</div>
+
+</div>
 </div>
 
 <!-- EQUIPO -->
 <div id="equipo" class="section">
-  <h3>Equipo Médico</h3>
+<h3>Equipo Médico</h3>
 
-  <label>🩺 Medicación actual</label>
-  <textarea id="medicacion" rows="4" placeholder="Una por línea"></textarea>
+<label>🩺 Medicación actual</label>
+<textarea id="medicacion" rows="4" placeholder="Una por línea"></textarea>
 
-  <label>📋 Controles</label>
-  <textarea id="controles" rows="4" placeholder="Uno por línea"></textarea>
+<label>📋 Indicaciones / controles</label>
+<textarea id="controles" rows="4" placeholder="Una por línea"></textarea>
 
-  <label>🧪 Exámenes</label>
-  <textarea id="examenes" rows="4" placeholder="Uno por línea"></textarea>
+<label>🧪 Exámenes</label>
+<textarea id="examenes" rows="4" placeholder="Una por línea"></textarea>
 
-  <button onclick="guardarEquipo()">Guardar información</button>
-  <p id="estadoGuardado" class="help"></p>
+<button onclick="guardarEquipo()">Guardar información</button>
+<p id="estadoGuardado" class="help"></p>
 </div>
-
 
 <!-- UBICACIÓN -->
 <div id="ubicacion" class="section">
-  <h3>Ubicación</h3>
-  <p>Pasaje Cerro Cordillera 4686, Peñaflor</p>
-  <iframe 
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.0858591025353!2d-70.88335822437418!3d-33.60307667332938"
-    height="300">
-  </iframe>
+<h3>Ubicación</h3>
+<p>Pasaje Cerro Cordillera 4686, Peñaflor</p>
+<iframe
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.0858591025353!2d-70.88335822437418!3d-33.60307667332938"
+  height="300">
+</iframe>
 </div>
 
 </div>
@@ -269,11 +271,16 @@ function openTab(id, el) {
   document.getElementById(id).classList.add("active");
   el.classList.add("active");
 }
+
+function limpiarLineas(texto) {
+  return texto.split("\n").map(l => l.trim()).filter(l => l !== "");
+}
+
 function guardarEquipo() {
   const data = {
-    medicacion: document.getElementById("medicacion").value.split("\n"),
-    controles: document.getElementById("controles").value.split("\n"),
-    examenes: document.getElementById("examenes").value.split("\n"),
+    medicacion: limpiarLineas(document.getElementById("medicacion").value),
+    controles: limpiarLineas(document.getElementById("controles").value),
+    examenes: limpiarLineas(document.getElementById("examenes").value),
     actualizado: new Date().toLocaleString("es-CL")
   };
 
@@ -286,12 +293,14 @@ function guardarEquipo() {
 
 database.ref("equipo_medico").on("value", snapshot => {
   const d = snapshot.val();
-  if (!d) return;
-
+  if (!d || !d.medicacion || d.medicacion.length === 0) {
+    document.getElementById("listaMedicacion").innerHTML =
+      "<li>No hay medicación registrada</li>";
+    return;
+  }
   document.getElementById("listaMedicacion").innerHTML =
     d.medicacion.map(m => `<li>${m}</li>`).join("");
 });
-
 </script>
 
 </body>
