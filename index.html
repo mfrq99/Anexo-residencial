@@ -37,14 +37,42 @@ hr { border:none; border-top:1px solid #eee; }
 </div>
 
 <div class="nav">
-<div class="active" onclick="openTab('paciente')">PACIENTE</div>
-<div onclick="openTab('medico')">MÉDICO</div>
-<div onclick="openTab('historial')">HISTORIAL</div>
+  <div class="active" onclick="openTab('inicio')">RESIDENCIA</div>
+  <div onclick="openTab('paciente')">PACIENTE</div>
+  <div onclick="openTab('medico')">EQUIPO</div>
+  <div onclick="openTab('historial')">HISTORIAL</div>
+</div>
+
+<div id="inicio" class="section active">
+  <h3>Anexo Residencial UC Christus</h3>
+
+  <p>
+    El Anexo Residencial UC Christus es una unidad de recuperación domiciliaria
+    destinada a la continuidad del cuidado post-alta hospitalaria, orientada al
+    descanso, bienestar y recuperación integral del paciente.
+  </p>
+
+  <p>
+    El sistema de visitas se encuentra regulado con el objetivo de proteger
+    la estabilidad clínica y emocional de la paciente.
+  </p>
+
+  <p style="background:#fff3cd;padding:10px;border-radius:6px;">
+    👉 <strong>Para reservar un cupo de visita, debe dirigirse a la sección
+    <em>Paciente</em>.</strong>
+  </p>
+
+  <p><strong>Estado actual:</strong> Paciente en domicilio – Modo recuperación.</p>
 </div>
 
 <!-- PACIENTE -->
 <div id="paciente" class="section active">
 <h3 id="tPaciente">Acceso Paciente</h3>
+<h3>Acceso Paciente</h3>
+<p>
+  Ingrese los datos del paciente para acceder a la ficha clínica
+  y al sistema de reserva de visitas.
+</p>
 
 <div id="login">
 <input id="rut" placeholder="RUT">
@@ -52,6 +80,16 @@ hr { border:none; border-top:1px solid #eee; }
 <button onclick="login()">Ingresar</button>
 </div>
 
+<div id="ficha" style="display:none">
+  <hr>
+  <h4>Ficha del Paciente</h4>
+
+  <p><strong>Nombre:</strong> Abuelita 💙</p>
+  <p><strong>Fecha de ingreso:</strong> 01 de febrero de 2026</p>
+  <p><strong>Unidad:</strong> Recuperación Cardiaca Domiciliaria</p>
+  <p><strong>Médico tratante:</strong> Dr. Hazelnut Teo</p>
+</div>
+  
 <div id="reserva" style="display:none">
 <p><strong id="cupos"></strong></p>
 <input id="nombre" placeholder="Nombre del visitante">
@@ -101,18 +139,17 @@ function actualizarCupos() {
 }
 
 function login() {
-  if (
-    document.getElementById("rut").value === PACIENTE_RUT &&
-    document.getElementById("fecha").value === PACIENTE_FECHA
-  ) {
+  if (rutCorrecto && fechaCorrecta) {
     document.getElementById("login").style.display = "none";
     document.getElementById("reserva").style.display = "block";
+    document.getElementById("ficha").style.display = "block";
     actualizarCupos();
     cargarHistorial();
   } else {
     alert("Datos incorrectos");
   }
 }
+
 
 function reservar() {
   const nombre = document.getElementById("nombre").value;
