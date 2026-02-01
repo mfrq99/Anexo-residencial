@@ -1,5 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBhN4t3uGfDwRZwN9r_k7egf5PjssfofJI",
+  authDomain: "residencial-6b6b7.firebaseapp.com",
+  databaseURL: "https://residencial-6b6b7-default-rtdb.firebaseio.com",
+  projectId: "residencial-6b6b7",
+  storageBucket: "residencial-6b6b7.firebasestorage.app",
+  messagingSenderId: "171840259391",
+  appId: "1:171840259391:web:c8d26aec2fc91f8058bf8a"
+};
+
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+</script>
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -177,14 +195,7 @@ iframe {
     </div>
 
     <hr>
-    <h4>Medicación Actual</h4>
-    <div class="info-box">
-      <ul>
-        <li>Languetazos terapéuticos a demanda</li>
-        <li>Té caliente matinal y vespertino</li>
-        <li>Abrazos controlados</li>
-      </ul>
-    </div>
+    <ul id="listaMedicacion"></ul>
 
     <hr>
     <h4>Reserva de Visitas</h4>
@@ -199,12 +210,21 @@ iframe {
 
 <!-- EQUIPO -->
 <div id="equipo" class="section">
-  <h3>Equipo a Cargo</h3>
-  <p><strong>Director:</strong> Emilio Riquelme Ramirez</p>
-  <p><strong>Contacto:</strong> +56 9 9797 5998</p>
-  <hr>
-  <p>Soporte emocional: Carboncito & Negranieves 🐾</p>
+  <h3>Equipo Médico</h3>
+
+  <label>🩺 Medicación actual</label>
+  <textarea id="medicacion" rows="4" placeholder="Una por línea"></textarea>
+
+  <label>📋 Controles</label>
+  <textarea id="controles" rows="4" placeholder="Uno por línea"></textarea>
+
+  <label>🧪 Exámenes</label>
+  <textarea id="examenes" rows="4" placeholder="Uno por línea"></textarea>
+
+  <button onclick="guardarEquipo()">Guardar información</button>
+  <p id="estadoGuardado" class="help"></p>
 </div>
+
 
 <!-- UBICACIÓN -->
 <div id="ubicacion" class="section">
@@ -249,6 +269,29 @@ function openTab(id, el) {
   document.getElementById(id).classList.add("active");
   el.classList.add("active");
 }
+function guardarEquipo() {
+  const data = {
+    medicacion: document.getElementById("medicacion").value.split("\n"),
+    controles: document.getElementById("controles").value.split("\n"),
+    examenes: document.getElementById("examenes").value.split("\n"),
+    actualizado: new Date().toLocaleString("es-CL")
+  };
+
+  database.ref("equipo_medico").set(data)
+    .then(() => {
+      document.getElementById("estadoGuardado").innerText =
+        "✅ Información guardada correctamente";
+    });
+}
+
+database.ref("equipo_medico").on("value", snapshot => {
+  const d = snapshot.val();
+  if (!d) return;
+
+  document.getElementById("listaMedicacion").innerHTML =
+    d.medicacion.map(m => `<li>${m}</li>`).join("");
+});
+
 </script>
 
 </body>
