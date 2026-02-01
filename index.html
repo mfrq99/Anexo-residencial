@@ -129,20 +129,32 @@ ul {
 
   <div id="login">
     <input id="rut" placeholder="RUT del paciente">
+    <div class="help">Ingrese RUT sin puntos y con guion (ej: 12345678-9)</div>
     <input id="fecha" type="date">
     <button onclick="login()">Ingresar</button>
   </div>
 
+    <!-- FICHA -->
   <div id="ficha" style="display:none">
     <hr>
     <h4>Ficha del Paciente</h4>
-    <p><strong>Nombre:</strong> Margarita de las Mercedes Arriaza Zamorano 💙</p>
+    <p><strong>Nombre:</strong> Abuelita 💙</p>
     <p><strong>Fecha de nacimiento:</strong> 06 de enero de 1951</p>
     <p><strong>Fecha de ingreso:</strong> 01 de febrero de 2026</p>
     <p><strong>Unidad:</strong> Recuperación Cardíaca Domiciliaria</p>
-    <p><strong>Médico tratante:</strong> Dr. Hazelnut Teo</p>
+    <p>
+      <strong>Médico tratante:</strong>
+      <span class="link" onclick="toggleMedico()">Dr. Hazelnut Teo</span>
+    </p>
+
+    <div id="infoMedico" class="info-box" style="display:none">
+      <strong>Dr. Hazelnut Teo</strong><br>
+      Especialista en Cardiología Emocional y Cariñología Avanzada.<br>
+      Experto en contención, regaloneo terapéutico y seguimiento post-alta.
+    </div>
   </div>
 
+  
   <div id="reserva" style="display:none">
     <hr>
     <h4>Reserva de Visita</h4>
