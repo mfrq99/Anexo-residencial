@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Anexo Residencial UC Christus</title>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
@@ -25,79 +24,19 @@ const database = firebase.database();
 </script>
 
 <style>
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background:#eef2f7;
-  margin:0;
-  padding:10px;
-}
-.container {
-  max-width:500px;
-  margin:auto;
-  background:white;
-  border-radius:15px;
-  box-shadow:0 4px 15px rgba(0,0,0,.1);
-  overflow:hidden;
-}
-.header {
-  background:#007bff;
-  color:white;
-  padding:20px;
-  text-align:center;
-}
-.nav {
-  display:flex;
-  background:#f8f9fa;
-}
-.nav div {
-  flex:1;
-  padding:10px;
-  text-align:center;
-  cursor:pointer;
-  font-weight:bold;
-  font-size:11px;
-  color:#555;
-}
-.nav div.active {
-  background:white;
-  color:#007bff;
-  border-bottom:3px solid #007bff;
-}
-.section {
-  display:none;
-  padding:20px;
-}
-.section.active { display:block; }
-
-input, textarea, button {
-  width:100%;
-  padding:10px;
-  margin:6px 0;
-  border-radius:6px;
-  border:1px solid #ccc;
-}
-
-button {
-  background:#28a745;
-  color:white;
-  font-weight:bold;
-  border:none;
-}
-
-ul { padding-left:20px; }
-.help { font-size:12px;color:#666; }
-.info-box {
-  background:#f1f8ff;
-  padding:10px;
-  border-radius:8px;
-  margin-top:10px;
-}
-iframe {
-  width:100%;
-  border:0;
-  border-radius:10px;
-}
-hr { border:none;border-top:1px solid #eee;margin:15px 0; }
+body { font-family:'Segoe UI',sans-serif;background:#eef2f7;margin:0;padding:10px }
+.container{max-width:500px;margin:auto;background:white;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,.1);overflow:hidden}
+.header{background:#007bff;color:white;padding:20px;text-align:center}
+.nav{display:flex;background:#f8f9fa}
+.nav div{flex:1;padding:10px;text-align:center;cursor:pointer;font-weight:bold;font-size:11px}
+.nav div.active{background:white;color:#007bff;border-bottom:3px solid #007bff}
+.section{display:none;padding:20px}
+.section.active{display:block}
+input,textarea,button{width:100%;padding:10px;margin:6px 0;border-radius:6px;border:1px solid #ccc}
+button{background:#28a745;color:white;font-weight:bold;border:none}
+ul{padding-left:20px}
+.info-box{background:#f1f8ff;padding:10px;border-radius:8px;margin-top:10px}
+hr{border:none;border-top:1px solid #eee;margin:15px 0}
 </style>
 </head>
 
@@ -105,23 +44,21 @@ hr { border:none;border-top:1px solid #eee;margin:15px 0; }
 <div class="container">
 
 <div class="header">
-  <h2>Anexo Residencial UC Christus</h2>
-  <small>Unidad de Recuperación y Regaloneo</small>
+<h2>Anexo Residencial UC Christus</h2>
+<small>Unidad de Recuperación y Regaloneo</small>
 </div>
 
 <div class="nav">
-  <div class="active" onclick="openTab('inicio',this)">RESIDENCIA</div>
-  <div onclick="openTab('paciente',this)">PACIENTE</div>
-  <div onclick="openTab('equipo',this)">EQUIPO MÉDICO</div>
-  <div onclick="openTab('ubicacion',this)">UBICACIÓN</div>
+<div class="active" onclick="openTab('inicio',this)">RESIDENCIA</div>
+<div onclick="openTab('paciente',this)">PACIENTE</div>
+<div onclick="openTab('equipo',this)">EQUIPO MÉDICO</div>
 </div>
 
 <!-- RESIDENCIA -->
 <div id="inicio" class="section active">
-  <p>Unidad de recuperación domiciliaria post-alta, orientada al bienestar físico y emocional.</p>
-  <div class="info-box">
-    👉 Para ver ficha clínica o reservar visitas debe ingresar a <b>Paciente</b>.
-  </div>
+<div class="info-box">
+👉 Para ver ficha clínica o reservar visitas debe ingresar a <b>Paciente</b>.
+</div>
 </div>
 
 <!-- PACIENTE -->
@@ -129,15 +66,14 @@ hr { border:none;border-top:1px solid #eee;margin:15px 0; }
 
 <h3>Acceso Paciente</h3>
 
-<div id="login">
-  <input id="rut" placeholder="RUT sin puntos y con guion">
-  <input id="fecha" type="date">
-  <button onclick="login()">Ingresar</button>
+<div id="loginBox">
+<input id="rut" placeholder="RUT sin puntos y con guion">
+<input id="fecha" type="date">
+<button onclick="loginPaciente()">Ingresar</button>
 </div>
 
 <div id="ficha" style="display:none">
 
-<hr>
 <h4>Ficha Clínica</h4>
 <div class="info-box">
 <b>Margarita De Las Mercedes Arriaza Zamorano</b><br>
@@ -147,13 +83,7 @@ Médico: Dr. Hazelnut Teo
 </div>
 
 <hr>
-<h4>Diagnóstico</h4>
-<div class="info-box">
-Recuperación post-alta cardíaca en entorno familiar protegido.
-</div>
-
-<hr>
-<h4>Medicación Actual</h4>
+<h4>Medicación</h4>
 <ul id="listaMedicacion"></ul>
 
 <hr>
@@ -164,28 +94,18 @@ Recuperación post-alta cardíaca en entorno familiar protegido.
 <h4>Exámenes</h4>
 <ul id="listaExamenesPaciente"></ul>
 
-<hr>
-<h4>Reserva Visitas</h4>
-<button onclick="document.getElementById('calendly').style.display='block'">
-Reservar visita
-</button>
-
-<div id="calendly" style="display:none;margin-top:10px;">
-<iframe src="https://calendly.com/mfrq89/30min" height="600"></iframe>
-</div>
-
 </div>
 </div>
 
-<!-- EQUIPO MÉDICO -->
+<!-- EQUIPO -->
 <div id="equipo" class="section">
 
 <h3>Equipo Médico</h3>
 
-<h4>🩺 Medicación</h4>
+<h4>💊 Medicación</h4>
 <input id="medNombre" placeholder="Nombre medicamento">
-<input id="medHorario" placeholder="Horario">
-<button onclick="agregarMedicacion()">Agregar</button>
+<input id="medHorarios" placeholder="Horarios (ej: 08:00,14:00,20:00)">
+<button onclick="guardarMedicacion()">Guardar</button>
 <ul id="listaMedicacionEquipo"></ul>
 
 <hr>
@@ -208,21 +128,15 @@ Reservar visita
 
 </div>
 
-<!-- UBICACIÓN -->
-<div id="ubicacion" class="section">
-<p>Pasaje Cerro Cordillera 4686, Peñaflor</p>
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!..." height="300"></iframe>
-</div>
-
 </div>
 
 <script>
-const PACIENTE_RUT = "6921444-4";
-const PACIENTE_FECHA = "1951-01-06";
+const PACIENTE_RUT="6921444-4";
+const PACIENTE_FECHA="1951-01-06";
 
-function login(){
+function loginPaciente(){
   if(rut.value===PACIENTE_RUT && fecha.value===PACIENTE_FECHA){
-    login.style.display="none";
+    loginBox.style.display="none";
     ficha.style.display="block";
   } else alert("Datos incorrectos");
 }
@@ -234,16 +148,13 @@ function openTab(id,el){
   el.classList.add("active");
 }
 
-function borrar(ruta){
-  if(confirm("¿Eliminar registro?")) database.ref(ruta).remove();
-}
-
-function agregarMedicacion(){
+function guardarMedicacion(){
+  const horarios = medHorarios.value.split(",").map(h=>h.trim());
   database.ref("equipo_medico/medicacion").push({
     nombre:medNombre.value,
-    horario:medHorario.value
+    horarios
   });
-  medNombre.value=medHorario.value="";
+  medNombre.value=medHorarios.value="";
 }
 
 function agregarControl(){
@@ -252,7 +163,6 @@ function agregarControl(){
     fecha:controlFecha.value,
     hora:controlHora.value
   });
-  controlDesc.value=controlFecha.value=controlHora.value="";
 }
 
 function agregarExamen(){
@@ -261,7 +171,10 @@ function agregarExamen(){
     fecha:examenFecha.value,
     hora:examenHora.value
   });
-  examenDesc.value=examenFecha.value=examenHora.value="";
+}
+
+function borrar(ruta){
+  if(confirm("¿Eliminar?")) database.ref(ruta).remove();
 }
 
 /* LISTENERS */
@@ -270,9 +183,10 @@ database.ref("equipo_medico/medicacion").on("value",snap=>{
   listaMedicacionEquipo.innerHTML="";
   snap.forEach(i=>{
     const d=i.val();
-    listaMedicacion.innerHTML+=`<li>💊 ${d.nombre} — ⏰ ${d.horario}</li>`;
+    listaMedicacion.innerHTML+=
+      `<li>💊 ${d.nombre}<br>⏰ ${d.horarios.join(", ")}</li>`;
     listaMedicacionEquipo.innerHTML+=
-      `<li>${d.nombre} (${d.horario})
+      `<li>${d.nombre} (${d.horarios.join(", ")})
       <button onclick="borrar('equipo_medico/medicacion/${i.key}')">🗑️</button></li>`;
   });
 });
@@ -282,10 +196,9 @@ database.ref("equipo_medico/controles").on("value",snap=>{
   listaControlesPaciente.innerHTML="";
   snap.forEach(i=>{
     const d=i.val();
-    const txt=`📋 ${d.descripcion} — ${d.fecha} ${d.hora}`;
-    listaControles.innerHTML+=
-      `<li>${txt}<button onclick="borrar('equipo_medico/controles/${i.key}')">🗑️</button></li>`;
-    listaControlesPaciente.innerHTML+=`<li>${txt}</li>`;
+    const t=`📋 ${d.descripcion} — ${d.fecha} ${d.hora}`;
+    listaControles.innerHTML+=`<li>${t}<button onclick="borrar('equipo_medico/controles/${i.key}')">🗑️</button></li>`;
+    listaControlesPaciente.innerHTML+=`<li>${t}</li>`;
   });
 });
 
@@ -294,14 +207,12 @@ database.ref("equipo_medico/examenes").on("value",snap=>{
   listaExamenesPaciente.innerHTML="";
   snap.forEach(i=>{
     const d=i.val();
-    const txt=`🧪 ${d.descripcion} — ${d.fecha} ${d.hora}`;
-    listaExamenes.innerHTML+=
-      `<li>${txt}<button onclick="borrar('equipo_medico/examenes/${i.key}')">🗑️</button></li>`;
-    listaExamenesPaciente.innerHTML+=`<li>${txt}</li>`;
+    const t=`🧪 ${d.descripcion} — ${d.fecha} ${d.hora}`;
+    listaExamenes.innerHTML+=`<li>${t}<button onclick="borrar('equipo_medico/examenes/${i.key}')">🗑️</button></li>`;
+    listaExamenesPaciente.innerHTML+=`<li>${t}</li>`;
   });
 });
 </script>
 
 </body>
 </html>
-
