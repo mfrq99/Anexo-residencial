@@ -6,19 +6,79 @@
 <title>Anexo Residencial UC Christus</title>
 
 <style>
-body { font-family: 'Segoe UI', sans-serif; background:#eef2f7; margin:0; padding:10px; }
-.container { max-width:500px; margin:auto; background:white; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,.1); overflow:hidden; }
-.header { background:#007bff; color:white; padding:20px; text-align:center; }
-.nav { display:flex; }
-.nav div { flex:1; padding:10px; text-align:center; cursor:pointer; font-weight:bold; font-size:12px; }
-.nav div.active { background:white; color:#007bff; border-bottom:3px solid #007bff; }
-.section { display:none; padding:20px; }
-.section.active { display:block; }
-input, button { width:100%; padding:10px; margin:8px 0; border-radius:6px; border:1px solid #ccc; }
-button { background:#28a745; color:white; font-weight:bold; border:none; }
-.badge { background:#dc3545; color:white; padding:5px 10px; border-radius:20px; font-size:12px; }
-.lang { text-align:right; font-size:12px; }
-hr { border:none; border-top:1px solid #eee; }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background:#eef2f7;
+  margin:0;
+  padding:10px;
+}
+.container {
+  max-width:500px;
+  margin:auto;
+  background:white;
+  border-radius:15px;
+  box-shadow:0 4px 15px rgba(0,0,0,.1);
+  overflow:hidden;
+}
+.header {
+  background:#007bff;
+  color:white;
+  padding:20px;
+  text-align:center;
+}
+.nav {
+  display:flex;
+  background:#f8f9fa;
+}
+.nav div {
+  flex:1;
+  padding:10px;
+  text-align:center;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:12px;
+  color:#555;
+}
+.nav div.active {
+  background:white;
+  color:#007bff;
+  border-bottom:3px solid #007bff;
+}
+.section {
+  display:none;
+  padding:20px;
+}
+.section.active {
+  display:block;
+}
+input, button {
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+button {
+  background:#28a745;
+  color:white;
+  font-weight:bold;
+  border:none;
+}
+.badge {
+  background:#dc3545;
+  color:white;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+}
+hr {
+  border:none;
+  border-top:1px solid #eee;
+  margin:15px 0;
+}
+ul {
+  padding-left:20px;
+}
 </style>
 </head>
 
@@ -27,90 +87,88 @@ hr { border:none; border-top:1px solid #eee; }
 <div class="container">
 
 <div class="header">
-<h2>Anexo Residencial UC Christus</h2>
-<small>Unidad de Recuperación Domiciliaria</small>
-</div>
-
-<div class="lang">
-<button onclick="setLang('es')">ES</button>
-<button onclick="setLang('en')">EN</button>
+  <h2>Anexo Residencial UC Christus</h2>
+  <small>Unidad de Recuperación y Regaloneo</small>
 </div>
 
 <div class="nav">
   <div class="active" onclick="openTab('inicio')">RESIDENCIA</div>
   <div onclick="openTab('paciente')">PACIENTE</div>
   <div onclick="openTab('medico')">EQUIPO</div>
-  <div onclick="openTab('historial')">HISTORIAL</div>
 </div>
 
+<!-- RESIDENCIA -->
 <div id="inicio" class="section active">
-  <h3>Anexo Residencial UC Christus</h3>
+  <h3>Descripción de la Residencia</h3>
 
   <p>
-    El Anexo Residencial UC Christus es una unidad de recuperación domiciliaria
-    destinada a la continuidad del cuidado post-alta hospitalaria, orientada al
-    descanso, bienestar y recuperación integral del paciente.
+    El <strong>Anexo Residencial UC Christus</strong> es una unidad de recuperación
+    domiciliaria destinada a la continuidad del cuidado post-alta hospitalaria,
+    enfocada en el descanso, bienestar y recuperación integral de la paciente.
   </p>
 
   <p>
-    El sistema de visitas se encuentra regulado con el objetivo de proteger
-    la estabilidad clínica y emocional de la paciente.
+    Con el objetivo de resguardar la estabilidad clínica y emocional,
+    el sistema de visitas se encuentra regulado mediante cupos diarios.
   </p>
 
   <p style="background:#fff3cd;padding:10px;border-radius:6px;">
-    👉 <strong>Para reservar un cupo de visita, debe dirigirse a la sección
+    👉 <strong>Para reservar un cupo de visita debe dirigirse a la sección
     <em>Paciente</em>.</strong>
   </p>
-  
+
+  <p><strong>Estado actual:</strong> Paciente en domicilio – modo recuperación.</p>
 </div>
 
 <!-- PACIENTE -->
-<div id="paciente" class="section active">
-<h3 id="tPaciente">Acceso Paciente</h3>
-<h3>Acceso Paciente</h3>
-<p>
-  Ingrese los datos del paciente para acceder a la ficha clínica
-  y al sistema de reserva de visitas.
-</p>
+<div id="paciente" class="section">
+  <h3>Acceso Paciente</h3>
+  <p>
+    Ingrese los datos del paciente para acceder a la ficha clínica
+    y al sistema de reserva de visitas.
+  </p>
 
-<div id="login">
-<input id="rut" placeholder="RUT">
-<input id="fecha" type="date">
-<button onclick="login()">Ingresar</button>
+  <div id="login">
+    <input id="rut" placeholder="RUT del paciente">
+    <input id="fecha" type="date">
+    <button onclick="login()">Ingresar</button>
+  </div>
+
+  <div id="ficha" style="display:none">
+    <hr>
+    <h4>Ficha del Paciente</h4>
+    <p><strong>Nombre:</strong> Abuelita 💙</p>
+    <p><strong>Fecha de nacimiento:</strong> 06 de enero de 1951</p>
+    <p><strong>Fecha de ingreso:</strong> 01 de febrero de 2026</p>
+    <p><strong>Unidad:</strong> Recuperación Cardíaca Domiciliaria</p>
+    <p><strong>Médico tratante:</strong> Dr. Hazelnut Teo</p>
+  </div>
+
+  <div id="reserva" style="display:none">
+    <hr>
+    <h4>Reserva de Visita</h4>
+    <p id="cupos"></p>
+    <input id="nombre" placeholder="Nombre del visitante">
+    <button onclick="reservar()">Reservar visita</button>
+    <p id="mensaje"></p>
+
+    <hr>
+    <h4>Historial de Visitas (Hoy)</h4>
+    <ul id="lista"></ul>
+  </div>
 </div>
 
-<div id="ficha" style="display:none">
-  <hr>
-  <h4>Ficha del Paciente</h4>
-
-    <p><strong>Nombre:</strong> Margarita de las Mercedes Arriaza Zamorano 💙</p>
-  <p><strong>Fecha de ingreso:</strong> 01 de febrero de 2026</p>
-  <p><strong>Unidad:</strong> Recuperación Cardiaca Domiciliaria</p>
-  <p><strong>Médico tratante:</strong> Dr. Hazelnut Teo</p>
-</div>
-  
-<div id="reserva" style="display:none">
-<p><strong id="cupos"></strong></p>
-<input id="nombre" placeholder="Nombre del visitante">
-<button onclick="reservar()">Reservar hora</button>
-<p id="mensaje"></p>
-</div>
-</div>
-
-<!-- MÉDICO -->
+<!-- EQUIPO -->
 <div id="medico" class="section">
-<h3>Médico Tratante</h3>
-<p><strong>Dr. Hazelnut Teo</strong></p>
-<p>Especialista en Cardiología Emocional y Cariñología Avanzada.</p>
-<p><strong>Director del Anexo:</strong> Emilio Riquelme</p>
-<p><strong>Soporte Técnico:</strong> Carboncito & Negranieves</p>
-<p><strong>Contacto Dirección:</strong> +56 9 97975998</p>
-</div>
+  <h3>Equipo a Cargo</h3>
+  <p><strong>Médico tratante:</strong> Dr. Hazelnut Teo</p>
+  <p>Especialista en Cardiología Emocional y Cariñología Avanzada.</p>
 
-<!-- HISTORIAL -->
-<div id="historial" class="section">
-<h3>Historial de Visitas (Hoy)</h3>
-<ul id="lista"></ul>
+  <hr>
+
+  <p><strong>Director del Anexo:</strong> Papá</p>
+  <p><strong>Soporte técnico de la página:</strong> Carboncito & Negranieves</p>
+  <p><strong>Contacto dirección:</strong> +56 9 XXXXXXXX</p>
 </div>
 
 </div>
@@ -138,33 +196,39 @@ function actualizarCupos() {
 }
 
 function login() {
-  if (rutCorrecto && fechaCorrecta) {
+  const rut = document.getElementById("rut").value;
+  const fecha = document.getElementById("fecha").value;
+
+  if (rut === PACIENTE_RUT && fecha === PACIENTE_FECHA) {
     document.getElementById("login").style.display = "none";
-    document.getElementById("reserva").style.display = "block";
     document.getElementById("ficha").style.display = "block";
+    document.getElementById("reserva").style.display = "block";
     actualizarCupos();
     cargarHistorial();
   } else {
-    alert("Datos incorrectos");
+    alert("Datos del paciente incorrectos");
   }
 }
 
-
 function reservar() {
   const nombre = document.getElementById("nombre").value;
-  if (!nombre) return alert("Ingrese nombre");
+  if (!nombre) return alert("Ingrese nombre del visitante");
 
-  const visitas = visitasHoy();
-  if (visitas.length >= MAX_VISITAS) {
-    document.getElementById("mensaje").innerText = "Cupos llenos hoy";
+  const hoyVisitas = visitasHoy();
+  if (hoyVisitas.length >= MAX_VISITAS) {
+    document.getElementById("mensaje").innerText = "No hay cupos disponibles hoy";
     return;
   }
 
   const data = JSON.parse(localStorage.getItem("visitas") || "[]");
-  data.push({ nombre, fecha: hoy(), hora: new Date().toLocaleTimeString() });
+  data.push({
+    nombre: nombre,
+    fecha: hoy(),
+    hora: new Date().toLocaleTimeString()
+  });
   localStorage.setItem("visitas", JSON.stringify(data));
 
-  document.getElementById("mensaje").innerText = "Reserva confirmada";
+  document.getElementById("mensaje").innerText = "Visita registrada correctamente";
   actualizarCupos();
   cargarHistorial();
 }
@@ -184,14 +248,6 @@ function openTab(id) {
   document.querySelectorAll(".nav div").forEach(n => n.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   event.target.classList.add("active");
-}
-
-function setLang(lang) {
-  if (lang === "en") {
-    document.getElementById("tPaciente").innerText = "Patient Access";
-  } else {
-    document.getElementById("tPaciente").innerText = "Acceso Paciente";
-  }
 }
 </script>
 
