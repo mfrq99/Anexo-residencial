@@ -110,7 +110,8 @@ iframe {
 <div class="nav">
   <div class="active" onclick="openTab('inicio', this)">RESIDENCIA</div>
   <div onclick="openTab('paciente', this)">PACIENTE</div>
-  <div onclick="openTab('equipo', this)">EQUIPO</div>
+  <div onclick="openTab('equipoMedico')">EQUIPO MÉDICO</div>
+  <div onclick="openTab('equipo', this)">ADMINISTRACIÓN</div>
   <div onclick="openTab('ubicacion', this)">UBICACIÓN</div>
 </div>
 
@@ -197,7 +198,7 @@ iframe {
   </div>
 </div>
 
-<!-- EQUIPO -->
+<!-- ADMINISTRACIÓN -->
 <div id="equipo" class="section">
   <h3>Equipo a Cargo</h3>
   <p><strong>Director:</strong> Emilio Riquelme Ramirez</p>
@@ -206,14 +207,57 @@ iframe {
   <p>Soporte emocional: Carboncito & Negranieves 🐾</p>
 </div>
 
+<!-- EQUIPO MÉDICO -->
+<div id="equipoMedico" class="section">
+  <h3>🩺 Acceso Equipo Médico</h3>
+
+  <!-- LOGIN -->
+  <div id="loginMedico">
+    <input id="userMedico" placeholder="Usuario">
+    <input id="passMedico" type="password" placeholder="Clave">
+    <button onclick="loginMedico()">Ingresar</button>
+  </div>
+
+  <!-- PANEL MÉDICO -->
+  <div id="panelMedico" style="display:none">
+
+    <hr>
+    <h4>💊 Medicación Actual</h4>
+
+    <input id="medNombre" placeholder="Medicamento">
+    <input id="medDosis" placeholder="Dosis">
+    <input id="medHorario" placeholder="Horario (ej: 08:00)">
+    <input id="medObs" placeholder="Observaciones">
+    <button onclick="agregarMedicamento()">Agregar medicamento</button>
+
+    <ul id="listaMedicacion"></ul>
+
+    <hr>
+    <h4>🧪 Controles y Exámenes</h4>
+
+    <input id="exFecha" type="date">
+    <input id="exTipo" placeholder="Tipo de control / examen">
+    <input id="exNota" placeholder="Resultado / comentario">
+    <button onclick="agregarExamen()">Agregar control</button>
+
+    <ul id="listaExamenes"></ul>
+
+    <hr>
+    <h4>📝 Indicaciones Médicas</h4>
+
+    <input id="indicacion" placeholder="Nueva indicación médica">
+    <button onclick="agregarIndicacion()">Agregar indicación</button>
+
+    <ul id="listaIndicaciones"></ul>
+
+  </div>
+</div>
+  
 <!-- UBICACIÓN -->
 <div id="ubicacion" class="section">
   <h3>Ubicación</h3>
-  <p>Pasaje Cerro Cordillera 4686, Peñaflor</p>
-  <iframe 
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.0858591025353!2d-70.88335822437418!3d-33.60307667332938"
-    height="300">
-  </iframe>
+  <p>Pasaje Cerro Cordillera 2436, Peñaflor</p>
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.0858591025353!2d-70.88335822437418!3d-33.60307667332938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662e6c85ebc0ee5%3A0x36b025956bcb428c!2sCerro%20Cordillera%202436%2C%209750900%20Penaflor%2C%20Pe%C3%B1aflor%2C%20Regi%C3%B3n%20Metropolitana!5e0!3m2!1ses-419!2scl!4v1769982217862!5m2!1ses-419!2scl" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>
 
 </div>
@@ -221,6 +265,7 @@ iframe {
 <script>
 const PACIENTE_RUT = "6921444-4";
 const PACIENTE_FECHA = "1951-01-06";
+
 
 function login() {
   if (
@@ -249,6 +294,128 @@ function openTab(id, el) {
   document.getElementById(id).classList.add("active");
   el.classList.add("active");
 }
+
+/* ===== LOGIN EQUIPO MÉDICO ===== */
+function loginMedico() {
+  const u = document.getElementById("userMedico").value;
+  const p = document.getElementById("passMedico").value;
+
+  if (u === "admin" && p === "1234") {
+    document.getElementById("loginMedico").style.display = "none";
+    document.getElementById("panelMedico").style.display = "block";
+    cargarMedicacion();
+    cargarExamenes();
+    cargarIndicaciones();
+  } else {
+    alert("Credenciales incorrectas");
+  }
+}
+
+/* ===== MEDICACIÓN ===== */
+function agregarMedicamento() {
+  const data = JSON.parse(localStorage.getItem("medicacion") || "[]");
+
+  data.push({
+    nombre: medNombre.value,
+    dosis: medDosis.value,
+    horario: medHorario.value,
+    obs: medObs.value
+  });
+
+  localStorage.setItem("medicacion", JSON.stringify(data));
+  cargarMedicacion();
+}
+
+function cargarMedicacion() {
+  const lista = document.getElementById("listaMedicacion");
+  lista.innerHTML = "";
+  const data = JSON.parse(localStorage.getItem("medicacion") || "[]");
+
+  data.forEach((m, i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <strong>${m.nombre}</strong> – ${m.dosis} – ${m.horario}<br>
+      <small>${m.obs}</small>
+      <br><span class="link" onclick="eliminarMedicamento(${i})">Eliminar</span>
+    `;
+    lista.appendChild(li);
+  });
+}
+
+function eliminarMedicamento(i) {
+  const data = JSON.parse(localStorage.getItem("medicacion"));
+  data.splice(i, 1);
+  localStorage.setItem("medicacion", JSON.stringify(data));
+  cargarMedicacion();
+}
+
+/* ===== EXÁMENES ===== */
+function agregarExamen() {
+  const data = JSON.parse(localStorage.getItem("examenes") || "[]");
+
+  data.push({
+    fecha: exFecha.value,
+    tipo: exTipo.value,
+    nota: exNota.value
+  });
+
+  localStorage.setItem("examenes", JSON.stringify(data));
+  cargarExamenes();
+}
+
+function cargarExamenes() {
+  const lista = document.getElementById("listaExamenes");
+  lista.innerHTML = "";
+  const data = JSON.parse(localStorage.getItem("examenes") || "[]");
+
+  data.forEach((e, i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      📅 ${e.fecha} – <strong>${e.tipo}</strong><br>
+      <small>${e.nota}</small>
+      <br><span class="link" onclick="eliminarExamen(${i})">Eliminar</span>
+    `;
+    lista.appendChild(li);
+  });
+}
+
+function eliminarExamen(i) {
+  const data = JSON.parse(localStorage.getItem("examenes"));
+  data.splice(i, 1);
+  localStorage.setItem("examenes", JSON.stringify(data));
+  cargarExamenes();
+}
+
+/* ===== INDICACIONES ===== */
+function agregarIndicacion() {
+  const data = JSON.parse(localStorage.getItem("indicaciones") || "[]");
+  data.push(indicacion.value);
+  localStorage.setItem("indicaciones", JSON.stringify(data));
+  cargarIndicaciones();
+}
+
+function cargarIndicaciones() {
+  const lista = document.getElementById("listaIndicaciones");
+  lista.innerHTML = "";
+  const data = JSON.parse(localStorage.getItem("indicaciones") || "[]");
+
+  data.forEach((i, idx) => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${i}
+      <br><span class="link" onclick="eliminarIndicacion(${idx})">Eliminar</span>
+    `;
+    lista.appendChild(li);
+  });
+}
+
+function eliminarIndicacion(i) {
+  const data = JSON.parse(localStorage.getItem("indicaciones"));
+  data.splice(i, 1);
+  localStorage.setItem("indicaciones", JSON.stringify(data));
+  cargarIndicaciones();
+}
+
 </script>
 
 </body>
