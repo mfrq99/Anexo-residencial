@@ -7,488 +7,247 @@
 
 <style>
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background:#eef2f7;
-  margin:0;
-  padding:10px;
-}
-.container {
-  max-width:500px;
-  margin:auto;
-  background:white;
-  border-radius:15px;
-  box-shadow:0 4px 15px rgba(0,0,0,.1);
-  overflow:hidden;
-}
-.header {
-  background:#007bff;
-  color:white;
-  padding:20px;
-  text-align:center;
+  font-family: "Segoe UI", sans-serif;
+  background: #f2f6fb;
+  margin: 0;
 }
 .nav {
-  display:flex;
-  background:#f8f9fa;
+  display: flex;
+  background: #003a8f;
+  color: white;
 }
 .nav div {
-  flex:1;
-  padding:10px;
-  text-align:center;
-  cursor:pointer;
-  font-weight:bold;
-  font-size:11px;
-  color:#555;
+  padding: 15px;
+  cursor: pointer;
 }
-.nav div.active {
-  background:white;
-  color:#007bff;
-  border-bottom:3px solid #007bff;
+.nav .active {
+  background: #0056d2;
 }
 .section {
-  display:none;
-  padding:20px;
+  display: none;
+  padding: 20px;
 }
 .section.active {
-  display:block;
+  display: block;
+}
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.1);
 }
 input, button {
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border-radius:6px;
-  border:1px solid #ccc;
+  padding: 10px;
+  margin: 5px 0;
+  width: 100%;
 }
 button {
-  background:#28a745;
-  color:white;
-  font-weight:bold;
-  border:none;
+  background: #0056d2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
-.badge {
-  background:#dc3545;
-  color:white;
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:12px;
-}
-hr {
-  border:none;
-  border-top:1px solid #eee;
-  margin:15px 0;
-}
-ul {
-  padding-left:20px;
-}
-.help {
-  font-size:12px;
-  color:#666;
-}
-.info-box {
-  background:#f1f8ff;
-  padding:10px;
-  border-radius:8px;
-  margin-top:10px;
-  font-size:13px;
-}
-iframe {
-  width:100%;
-  border:0;
-  border-radius:10px;
-}
+h2 { color: #003a8f; }
+small { color: gray; }
+ul { padding-left: 20px; }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<div class="header">
-  <h2>Anexo Residencial UC Christus</h2>
-  <small>Unidad de Recuperación y Regaloneo</small>
-</div>
-
+<!-- NAV -->
 <div class="nav">
-  <div class="active" onclick="openTab('inicio', this)">RESIDENCIA</div>
+  <div class="active" onclick="openTab('inicio', this)">INICIO</div>
   <div onclick="openTab('paciente', this)">PACIENTE</div>
-  <div onclick="openTab('equipoMedico')">EQUIPO MÉDICO</div>
-  <div onclick="openTab('equipo', this)">ADMINISTRACIÓN</div>
-  <div onclick="openTab('ubicacion', this)">UBICACIÓN</div>
+  <div onclick="openTab('equipoMedico', this)">EQUIPO MÉDICO</div>
 </div>
 
-<!-- RESIDENCIA -->
+<!-- INICIO -->
 <div id="inicio" class="section active">
-  <h3>Descripción de la Residencia</h3>
-  <p>
-    Unidad de recuperación domiciliaria post-alta, orientada al bienestar,
-    estabilidad emocional y cuidado integral de la paciente.
-  </p>
-  <p style="background:#fff3cd;padding:10px;border-radius:6px;">
-    👉 Para reservar visitas debe ingresar a la sección <strong>Paciente</strong>.
-  </p>
+  <div class="card">
+    <h2>Anexo Residencial UC Christus</h2>
+    <p>Residencia de recuperación post hospitalaria enfocada en descanso, cariño y visitas organizadas.</p>
+    <p><strong>Importante:</strong> Para reservar una visita, ingrese a la sección <b>Paciente</b>.</p>
+    <p>Director del Anexo: <b>Papá</b></p>
+    <p>Soporte técnico: <b>Carboncito & Negranieves</b></p>
+  </div>
 </div>
 
 <!-- PACIENTE -->
 <div id="paciente" class="section">
-
-  <h3>Acceso Paciente</h3>
-
-  <div id="login">
-    <input id="rut" placeholder="RUT del paciente">
-    <div class="help">Ingrese RUT sin puntos y con guion</div>
-    <input id="fecha" type="date">
-    <button onclick="login()">Ingresar</button>
+  <div class="card" id="loginPaciente">
+    <h2>Acceso Paciente</h2>
+    <small>Ingrese RUT sin puntos y con guión</small>
+    <input id="rutPaciente" placeholder="6921444-4">
+    <input id="fechaPaciente" type="date">
+    <button onclick="loginPaciente()">Ingresar</button>
   </div>
 
-  <div id="ficha" style="display:none">
+  <div class="card" id="ficha" style="display:none;">
+    <h2>Ficha del Paciente</h2>
+    <p><b>Nombre:</b> Abuelita</p>
+    <p><b>RUT:</b> 6921444-4</p>
+    <p><b>Fecha nacimiento:</b> 06-01-1951</p>
+    <p><b>Fecha ingreso:</b> Febrero 2026</p>
+    <p><b>Unidad:</b> Recuperación y Regaloneo</p>
+    <p>
+      <b>Médico tratante:</b>
+      <span style="color:#0056d2; cursor:pointer;" onclick="alert('Dr. Hazelnut Teo\nEspecialista en cariño, abrazos terapéuticos y alta sonrisal.')">
+        Dr. Hazelnut Teo
+      </span>
+    </p>
 
     <hr>
-    <h4>Ficha Clínica</h4>
 
-    <div class="info-box" style="display:flex;gap:10px;align-items:center;">
-      <img src="images/paciente.jpg" style="width:60px;height:60px;border-radius:50%;">
-      <div>
-        <strong>Margarita De Las Mercedes Arriaza Zamorano</strong><br>
-        <small>RUT: 6.921.444-4</small>
-      </div>
-    </div>
-
-    <p><strong>Nacimiento:</strong> 06-01-1951</p>
-    <p><strong>Ingreso:</strong> 01-02-2026</p>
-    <p><strong>Unidad:</strong> Recuperación Cardíaca Domiciliaria</p>
-
-    <hr>
-    <h4>Diagnóstico</h4>
-    <div class="info-box">
-      Recuperación post-alta cardíaca en ambiente familiar controlado.
-    </div>
-
-    <hr>
-    <h4>Médico Tratante</h4>
-
-    <div class="info-box" onclick="toggleMedico()" style="cursor:pointer;display:flex;gap:10px;">
-      <img src="images/doctor-teo.jpg" style="width:60px;height:60px;border-radius:50%;">
-      <div>
-        <strong>Dr. Hazelnut Teo</strong><br>
-        <small>Cardiología Emocional</small>
-      </div>
-    </div>
-
-    <div id="infoMedico" class="info-box" style="display:none;">
-      Especialista en contención emocional y regaloneo terapéutico.
-    </div>
-
-    <hr>
-    <h4>💊 Medicación Actual</h4>
-    <ul id="verMedicacion"></ul>
-    
-    <hr>
-    <h4>🧪 Próximos Controles y Exámenes</h4>
-    <ul id="verExamenes"></ul>
-    
-    <hr>
-    <h4>📝 Indicaciones Médicas Vigentes</h4>
-    <ul id="verIndicaciones"></ul>
-
-
-    <hr>
-    <h4>Reserva de Visitas</h4>
-    <button onclick="mostrarCalendly()">Reservar visita</button>
-
-    <div id="calendly" style="display:none;margin-top:15px;">
-      <iframe src="https://calendly.com/mfrq89/30min" height="600"></iframe>
-    </div>
-
-  </div>
-</div>
-
-<!-- ADMINISTRACIÓN -->
-<div id="equipo" class="section">
-  <h3>Equipo a Cargo</h3>
-  <p><strong>Director:</strong> Emilio Riquelme Ramirez</p>
-  <p><strong>Contacto:</strong> +56 9 9797 5998</p>
-  <hr>
-  <p>Soporte emocional: Carboncito & Negranieves 🐾</p>
-</div>
-
-<!-- EQUIPO MÉDICO -->
-<div id="equipoMedico" class="section">
-  <h3>🩺 Acceso Equipo Médico</h3>
-
-  <!-- LOGIN -->
-  <div id="loginMedico">
-    <input id="userMedico" placeholder="Usuario">
-    <input id="passMedico" type="password" placeholder="Clave">
-    <button onclick="loginMedico()">Ingresar</button>
-  </div>
-
-  <!-- PANEL MÉDICO -->
-  <div id="panelMedico" style="display:none">
-
-    <hr>
-    <h4>💊 Medicación Actual</h4>
-
-    <input id="medNombre" placeholder="Medicamento">
-    <input id="medDosis" placeholder="Dosis">
-    <input id="medHorario" placeholder="Horario (ej: 08:00)">
-    <input id="medObs" placeholder="Observaciones">
-    <button onclick="agregarMedicamento()">Agregar medicamento</button>
-
+    <h3>💊 Medicación Actual</h3>
     <ul id="listaMedicacion"></ul>
 
-    <hr>
-    <h4>🧪 Controles y Exámenes</h4>
-
-    <input id="exFecha" type="date">
-    <input id="exTipo" placeholder="Tipo de control / examen">
-    <input id="exNota" placeholder="Resultado / comentario">
-    <button onclick="agregarExamen()">Agregar control</button>
-
+    <h3>🧪 Exámenes y Controles</h3>
     <ul id="listaExamenes"></ul>
 
-    <hr>
-    <h4>📝 Indicaciones Médicas</h4>
-
-    <input id="indicacion" placeholder="Nueva indicación médica">
-    <button onclick="agregarIndicacion()">Agregar indicación</button>
-
+    <h3>📝 Indicaciones Médicas</h3>
     <ul id="listaIndicaciones"></ul>
 
+    <hr>
+    <h3>📅 Reservar Visita</h3>
+    <a href="https://calendly.com/mfrq89/30min" target="_blank">
+      <button>Ir a Calendario de Visitas</button>
+    </a>
   </div>
 </div>
-  
-<!-- UBICACIÓN -->
-<div id="ubicacion" class="section">
-  <h3>Ubicación</h3>
-  <p>Pasaje Cerro Cordillera 2436, Peñaflor</p>
-  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.0858591025353!2d-70.88335822437418!3d-33.60307667332938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662e6c85ebc0ee5%3A0x36b025956bcb428c!2sCerro%20Cordillera%202436%2C%209750900%20Penaflor%2C%20Pe%C3%B1aflor%2C%20Regi%C3%B3n%20Metropolitana!5e0!3m2!1ses-419!2scl!4v1769982217862!5m2!1ses-419!2scl" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-</div>
 
+<!-- EQUIPO MEDICO -->
+<div id="equipoMedico" class="section">
+  <div class="card" id="loginEquipo">
+    <h2>Acceso Equipo Médico</h2>
+    <input id="user" placeholder="Usuario">
+    <input id="pass" type="password" placeholder="Clave">
+    <button onclick="loginEquipo()">Ingresar</button>
+  </div>
+
+  <div id="panelEquipo" style="display:none;">
+    <div class="card">
+      <h2>Registrar Medicación</h2>
+      <input id="medNombre" placeholder="Medicamento">
+      <input id="medHorario" placeholder="Horario">
+      <button onclick="agregarMedicacion()">Guardar</button>
+    </div>
+
+    <div class="card">
+      <h2>Registrar Examen</h2>
+      <input id="exNombre" placeholder="Examen">
+      <input id="exFecha" type="date">
+      <button onclick="agregarExamen()">Guardar</button>
+    </div>
+
+    <div class="card">
+      <h2>Indicaciones Médicas</h2>
+      <input id="indTexto" placeholder="Indicación">
+      <button onclick="agregarIndicacion()">Guardar</button>
+    </div>
+  </div>
 </div>
 
 <script>
-const PACIENTE_RUT = "6921444-4";
-const PACIENTE_FECHA = "1951-01-06";
-
-
-function login() {
-  const rut = document.getElementById("rut").value;
-  const fecha = document.getElementById("fecha").value;
-
-  if (rut === PACIENTE_RUT && fecha === PACIENTE_FECHA) {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("ficha").style.display = "block";
-    document.getElementById("reserva").style.display = "block";
-
-    mostrarMedicacionPaciente();
-    mostrarExamenesPaciente();
-    mostrarIndicacionesPaciente();
-  } else {
-    alert("Datos del paciente incorrectos");
-  }
-}
-
-
-function toggleMedico() {
-  const m = document.getElementById("infoMedico");
-  m.style.display = m.style.display === "none" ? "block" : "none";
-}
-
-function mostrarCalendly() {
-  document.getElementById("calendly").style.display = "block";
-}
-
 function openTab(id, el) {
   document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
   document.querySelectorAll(".nav div").forEach(n => n.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   el.classList.add("active");
-}
 
-/* ===== LOGIN EQUIPO MÉDICO ===== */
-function loginMedico() {
-  const u = document.getElementById("userMedico").value;
-  const p = document.getElementById("passMedico").value;
-
-  if (u === "admin" && p === "1234") {
-    document.getElementById("loginMedico").style.display = "none";
-    document.getElementById("panelMedico").style.display = "block";
-    cargarMedicacion();
-    cargarExamenes();
-    cargarIndicaciones();
-  } else {
-    alert("Credenciales incorrectas");
+  if (id === "paciente" && document.getElementById("ficha").style.display === "block") {
+    mostrarMedicacion();
+    mostrarExamenes();
+    mostrarIndicaciones();
   }
 }
 
-/* ===== MEDICACIÓN ===== */
-function agregarMedicamento() {
-  const data = JSON.parse(localStorage.getItem("medicacion") || "[]");
+// LOGIN PACIENTE
+function loginPaciente() {
+  if (
+    document.getElementById("rutPaciente").value === "6921444-4" &&
+    document.getElementById("fechaPaciente").value === "1951-01-06"
+  ) {
+    document.getElementById("loginPaciente").style.display = "none";
+    document.getElementById("ficha").style.display = "block";
+    mostrarMedicacion();
+    mostrarExamenes();
+    mostrarIndicaciones();
+  } else {
+    alert("Datos incorrectos");
+  }
+}
 
+// LOGIN EQUIPO
+function loginEquipo() {
+  if (
+    document.getElementById("user").value === "admin" &&
+    document.getElementById("pass").value === "1234"
+  ) {
+    document.getElementById("loginEquipo").style.display = "none";
+    document.getElementById("panelEquipo").style.display = "block";
+  } else {
+    alert("Acceso denegado");
+  }
+}
+
+// MEDICACION
+function agregarMedicacion() {
+  let data = JSON.parse(localStorage.getItem("meds") || "[]");
   data.push({
     nombre: medNombre.value,
-    dosis: medDosis.value,
-    horario: medHorario.value,
-    obs: medObs.value
+    horario: medHorario.value
   });
-
-  localStorage.setItem("medicacion", JSON.stringify(data));
-  cargarMedicacion();
+  localStorage.setItem("meds", JSON.stringify(data));
+  medNombre.value = "";
+  medHorario.value = "";
+  alert("Medicamento guardado");
 }
 
-function cargarMedicacion() {
-  const lista = document.getElementById("listaMedicacion");
-  lista.innerHTML = "";
-  const data = JSON.parse(localStorage.getItem("medicacion") || "[]");
-
-  data.forEach((m, i) => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <strong>${m.nombre}</strong> – ${m.dosis} – ${m.horario}<br>
-      <small>${m.obs}</small>
-      <br><span class="link" onclick="eliminarMedicamento(${i})">Eliminar</span>
-    `;
-    lista.appendChild(li);
-  });
+function mostrarMedicacion() {
+  let ul = document.getElementById("listaMedicacion");
+  ul.innerHTML = "";
+  JSON.parse(localStorage.getItem("meds") || "[]")
+    .forEach(m => ul.innerHTML += `<li>${m.nombre} – ${m.horario}</li>`);
 }
 
-function eliminarMedicamento(i) {
-  const data = JSON.parse(localStorage.getItem("medicacion"));
-  data.splice(i, 1);
-  localStorage.setItem("medicacion", JSON.stringify(data));
-  cargarMedicacion();
-}
-
-/* ===== EXÁMENES ===== */
+// EXAMENES
 function agregarExamen() {
-  const data = JSON.parse(localStorage.getItem("examenes") || "[]");
-
+  let data = JSON.parse(localStorage.getItem("examenes") || "[]");
   data.push({
-    fecha: exFecha.value,
-    tipo: exTipo.value,
-    nota: exNota.value
+    nombre: exNombre.value,
+    fecha: exFecha.value
   });
-
   localStorage.setItem("examenes", JSON.stringify(data));
-  cargarExamenes();
+  exNombre.value = "";
+  exFecha.value = "";
+  alert("Examen guardado");
 }
 
-function cargarExamenes() {
-  const lista = document.getElementById("listaExamenes");
-  lista.innerHTML = "";
-  const data = JSON.parse(localStorage.getItem("examenes") || "[]");
-
-  data.forEach((e, i) => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      📅 ${e.fecha} – <strong>${e.tipo}</strong><br>
-      <small>${e.nota}</small>
-      <br><span class="link" onclick="eliminarExamen(${i})">Eliminar</span>
-    `;
-    lista.appendChild(li);
-  });
+function mostrarExamenes() {
+  let ul = document.getElementById("listaExamenes");
+  ul.innerHTML = "";
+  JSON.parse(localStorage.getItem("examenes") || "[]")
+    .forEach(e => ul.innerHTML += `<li>${e.nombre} – ${e.fecha}</li>`);
 }
 
-function eliminarExamen(i) {
-  const data = JSON.parse(localStorage.getItem("examenes"));
-  data.splice(i, 1);
-  localStorage.setItem("examenes", JSON.stringify(data));
-  cargarExamenes();
-}
-
-/* ===== INDICACIONES ===== */
+// INDICACIONES
 function agregarIndicacion() {
-  const data = JSON.parse(localStorage.getItem("indicaciones") || "[]");
-  data.push(indicacion.value);
+  let data = JSON.parse(localStorage.getItem("indicaciones") || "[]");
+  data.push(indTexto.value);
   localStorage.setItem("indicaciones", JSON.stringify(data));
-  cargarIndicaciones();
+  indTexto.value = "";
+  alert("Indicación guardada");
 }
 
-function cargarIndicaciones() {
-  const lista = document.getElementById("listaIndicaciones");
-  lista.innerHTML = "";
-  const data = JSON.parse(localStorage.getItem("indicaciones") || "[]");
-
-  data.forEach((i, idx) => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      ${i}
-      <br><span class="link" onclick="eliminarIndicacion(${idx})">Eliminar</span>
-    `;
-    lista.appendChild(li);
-  });
+function mostrarIndicaciones() {
+  let ul = document.getElementById("listaIndicaciones");
+  ul.innerHTML = "";
+  JSON.parse(localStorage.getItem("indicaciones") || "[]")
+    .forEach(i => ul.innerHTML += `<li>${i}</li>`);
 }
-
-function eliminarIndicacion(i) {
-  const data = JSON.parse(localStorage.getItem("indicaciones"));
-  data.splice(i, 1);
-  localStorage.setItem("indicaciones", JSON.stringify(data));
-  cargarIndicaciones();
-}
-/* ===== VISUALIZACIÓN PACIENTE ===== */
-
-function mostrarMedicacionPaciente() {
-  const lista = document.getElementById("verMedicacion");
-  lista.innerHTML = "";
-
-  const data = JSON.parse(localStorage.getItem("medicacion") || "[]");
-
-  if (data.length === 0) {
-    lista.innerHTML = "<li>No hay medicación registrada.</li>";
-    return;
-  }
-
-  data.forEach(m => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <strong>${m.nombre}</strong><br>
-      Dosis: ${m.dosis}<br>
-      Horario: ${m.horario}<br>
-      <small>${m.obs}</small>
-    `;
-    lista.appendChild(li);
-  });
-}
-
-function mostrarExamenesPaciente() {
-  const lista = document.getElementById("verExamenes");
-  lista.innerHTML = "";
-
-  const data = JSON.parse(localStorage.getItem("examenes") || "[]");
-
-  if (data.length === 0) {
-    lista.innerHTML = "<li>No hay controles programados.</li>";
-    return;
-  }
-
-  data.forEach(e => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      📅 <strong>${e.fecha}</strong><br>
-      ${e.tipo}<br>
-      <small>${e.nota}</small>
-    `;
-    lista.appendChild(li);
-  });
-}
-
-function mostrarIndicacionesPaciente() {
-  const lista = document.getElementById("verIndicaciones");
-  lista.innerHTML = "";
-
-  const data = JSON.parse(localStorage.getItem("indicaciones") || "[]");
-
-  if (data.length === 0) {
-    lista.innerHTML = "<li>No hay indicaciones activas.</li>";
-    return;
-  }
-
-  data.forEach(i => {
-    const li = document.createElement("li");
-    li.innerText = i;
-    lista.appendChild(li);
-  });
-}
-
 </script>
 
 </body>
