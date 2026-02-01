@@ -79,6 +79,23 @@ hr {
 ul {
   padding-left:20px;
 }
+.help {
+  font-size:12px;
+  color:#666;
+  margin-top:-4px;
+}
+.link {
+  color:#007bff;
+  cursor:pointer;
+  text-decoration:underline;
+}
+.info-box {
+  background:#f1f8ff;
+  padding:10px;
+  border-radius:8px;
+  margin-top:10px;
+  font-size:13px;
+}
 </style>
 </head>
 
@@ -94,7 +111,7 @@ ul {
 <div class="nav">
   <div class="active" onclick="openTab('inicio')">RESIDENCIA</div>
   <div onclick="openTab('paciente')">PACIENTE</div>
-  <div onclick="openTab('medico')">EQUIPO</div>
+  <div onclick="openTab('equipo')">EQUIPO</div>
 </div>
 
 <!-- RESIDENCIA -->
@@ -108,8 +125,8 @@ ul {
   </p>
 
   <p>
-    Con el objetivo de resguardar la estabilidad clínica y emocional,
-    el sistema de visitas se encuentra regulado mediante cupos diarios.
+    El sistema de visitas se encuentra regulado mediante cupos diarios con el fin
+    de proteger la estabilidad clínica y emocional.
   </p>
 
   <p style="background:#fff3cd;padding:10px;border-radius:6px;">
@@ -117,6 +134,7 @@ ul {
     <em>Paciente</em>.</strong>
   </p>
 
+  <p><strong>Estado actual:</strong> Paciente en domicilio – modo recuperación.</p>
 </div>
 
 <!-- PACIENTE -->
@@ -134,7 +152,7 @@ ul {
     <button onclick="login()">Ingresar</button>
   </div>
 
-    <!-- FICHA -->
+  <!-- FICHA -->
   <div id="ficha" style="display:none">
     <hr>
     <h4>Ficha del Paciente</h4>
@@ -154,7 +172,7 @@ ul {
     </div>
   </div>
 
-  
+  <!-- RESERVA -->
   <div id="reserva" style="display:none">
     <hr>
     <h4>Reserva de Visita</h4>
@@ -170,15 +188,17 @@ ul {
 </div>
 
 <!-- EQUIPO -->
-<div id="medico" class="section">
+<div id="equipo" class="section">
   <h3>Equipo a Cargo</h3>
-  <p><strong>Director del Anexo:</strong> Emilio Riquelme</p>
-  <p><strong>Contacto director:</strong> +56 9 97975998</p>
-  
+
+  <p><strong>Médico tratante:</strong> Dr. Hazelnut Teo</p>
+  <p>Especialista en Cardiología Emocional y Cariñología Avanzada.</p>
+
   <hr>
-  
+
+  <p><strong>Director del Anexo:</strong> Papá</p>
   <p><strong>Soporte técnico de la página:</strong> Carboncito & Negranieves</p>
-  
+  <p><strong>Contacto dirección:</strong> +56 9 XXXXXXXX</p>
 </div>
 
 </div>
@@ -224,8 +244,7 @@ function reservar() {
   const nombre = document.getElementById("nombre").value;
   if (!nombre) return alert("Ingrese nombre del visitante");
 
-  const hoyVisitas = visitasHoy();
-  if (hoyVisitas.length >= MAX_VISITAS) {
+  if (visitasHoy().length >= MAX_VISITAS) {
     document.getElementById("mensaje").innerText = "No hay cupos disponibles hoy";
     return;
   }
@@ -253,6 +272,11 @@ function cargarHistorial() {
   });
 }
 
+function toggleMedico() {
+  const info = document.getElementById("infoMedico");
+  info.style.display = info.style.display === "none" ? "block" : "none";
+}
+
 function openTab(id) {
   document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
   document.querySelectorAll(".nav div").forEach(n => n.classList.remove("active"));
@@ -263,3 +287,4 @@ function openTab(id) {
 
 </body>
 </html>
+
