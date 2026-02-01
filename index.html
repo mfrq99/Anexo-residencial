@@ -82,12 +82,6 @@ ul {
 .help {
   font-size:12px;
   color:#666;
-  margin-top:-4px;
-}
-.link {
-  color:#007bff;
-  cursor:pointer;
-  text-decoration:underline;
 }
 .info-box {
   background:#f1f8ff;
@@ -98,7 +92,6 @@ ul {
 }
 iframe {
   width:100%;
-  height:250px;
   border:0;
   border-radius:10px;
 }
@@ -115,185 +108,112 @@ iframe {
 </div>
 
 <div class="nav">
-  <div class="active" onclick="openTab('inicio')">RESIDENCIA</div>
-  <div onclick="openTab('paciente')">PACIENTE</div>
-  <div onclick="openTab('equipo')">EQUIPO</div>
-  <div onclick="openTab('ubicacion')">UBICACIÓN</div>
+  <div class="active" onclick="openTab('inicio', this)">RESIDENCIA</div>
+  <div onclick="openTab('paciente', this)">PACIENTE</div>
+  <div onclick="openTab('equipo', this)">EQUIPO</div>
+  <div onclick="openTab('ubicacion', this)">UBICACIÓN</div>
 </div>
 
 <!-- RESIDENCIA -->
 <div id="inicio" class="section active">
   <h3>Descripción de la Residencia</h3>
-
   <p>
-    El <strong>Anexo Residencial UC Christus</strong> es una unidad de recuperación
-    domiciliaria destinada a la continuidad del cuidado post-alta hospitalaria,
-    enfocada en el descanso, bienestar y recuperación integral de la paciente.
+    Unidad de recuperación domiciliaria post-alta, orientada al bienestar,
+    estabilidad emocional y cuidado integral de la paciente.
   </p>
-
-  <p>
-    El sistema de visitas se encuentra regulado mediante cupos diarios con el fin
-    de proteger la estabilidad clínica y emocional.
-  </p>
-
   <p style="background:#fff3cd;padding:10px;border-radius:6px;">
-    👉 <strong>Para reservar un cupo de visita debe dirigirse a la sección
-    <em>Paciente</em>.</strong>
+    👉 Para reservar visitas debe ingresar a la sección <strong>Paciente</strong>.
   </p>
 </div>
 
 <!-- PACIENTE -->
 <div id="paciente" class="section">
+
   <h3>Acceso Paciente</h3>
-  <p>
-    Ingrese los datos del paciente para acceder a la ficha clínica
-    y al sistema de reserva de visitas.
-  </p>
 
   <div id="login">
     <input id="rut" placeholder="RUT del paciente">
-    <div class="help">Ingrese RUT sin puntos y con guion (ej: 12345678-9)</div>
+    <div class="help">Ingrese RUT sin puntos y con guion</div>
     <input id="fecha" type="date">
     <button onclick="login()">Ingresar</button>
   </div>
 
   <div id="ficha" style="display:none">
 
-  <hr>
-  <h4>Ficha Clínica del Paciente</h4>
+    <hr>
+    <h4>Ficha Clínica</h4>
 
-  <div class="info-box" style="display:flex;align-items:center;gap:10px;">
-    <img src="images/paciente.jpg" alt="Paciente" style="width:60px;height:60px;border-radius:50%;border:2px solid #007bff;">
-    <div>
-      <strong>Margarita De Las Mercedes Arriaza Zamorano</strong><br>
-      <small>RUT: 6.921.444-4</small>
+    <div class="info-box" style="display:flex;gap:10px;align-items:center;">
+      <img src="images/paciente.jpg" style="width:60px;height:60px;border-radius:50%;">
+      <div>
+        <strong>Margarita De Las Mercedes Arriaza Zamorano</strong><br>
+        <small>RUT: 6.921.444-4</small>
+      </div>
     </div>
-  </div>
 
-  <p><strong>Fecha de nacimiento:</strong> 06 de enero de 1951</p>
-  <p><strong>Fecha de ingreso:</strong> 01 de febrero de 2026</p>
-  <p><strong>Unidad:</strong> Recuperación Cardíaca Domiciliaria</p>
+    <p><strong>Nacimiento:</strong> 06-01-1951</p>
+    <p><strong>Ingreso:</strong> 01-02-2026</p>
+    <p><strong>Unidad:</strong> Recuperación Cardíaca Domiciliaria</p>
 
-  <hr>
-
-<h4>🩺Diagnóstico Clínico</h4>
-
-<div class="info-box">
-  <p>
-    <strong>Diagnóstico principal:</strong><br>
-    Síndrome de Recuperación Post-Alta Cardíaca en Ambiente Familiar Controlado.
-  </p>
-
-  <p>
-    <strong>Diagnósticos asociados:</strong>
-  </p>
-
-  <ul>
-    <li>Necesidad de contención emocional continua.</li>
-    <li>Alta sensibilidad a estímulos estresantes.</li>
-    <li>Indicación de visitas reguladas y de calidad.</li>
-  </ul>
-
-  <p>
-    <strong>Pronóstico:</strong><br>
-    Evolución favorable con cuidados adecuados, regaloneo terapéutico y ambiente tranquilo.
-  </p>
-</div>
-
-
-  <hr>
-
-  <h4>Médico Tratante</h4>
-
-  <div class="info-box" style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="toggleMedico()">
-    <img src="images/doctor-teo.jpg" alt="Dr Teo" style="width:60px;height:60px;border-radius:50%;border:2px solid #28a745;">
-    <div>
-      <strong>Dr. Hazelnut Teo</strong><br>
-      <small>Cardiología Emocional</small>
+    <hr>
+    <h4>Diagnóstico</h4>
+    <div class="info-box">
+      Recuperación post-alta cardíaca en ambiente familiar controlado.
     </div>
-  </div>
 
-  <div id="infoMedico" class="info-box" style="display:none;margin-top:10px;">
-    <img src="images/corazon.png" style="width:30px;float:right;">
-    <strong>Dr. Hazelnut Teo</strong><br>
-    Especialista en Cardiología Emocional y Cariñología Avanzada.<br>
-    Experto en contención afectiva, seguimiento post-alta y regaloneo terapéutico.<br><br>
-    <small>Registro Profesional Interno N° 001-ARUC</small>
-  </div>
+    <hr>
+    <h4>Médico Tratante</h4>
 
-</div>
+    <div class="info-box" onclick="toggleMedico()" style="cursor:pointer;display:flex;gap:10px;">
+      <img src="images/doctor-teo.jpg" style="width:60px;height:60px;border-radius:50%;">
+      <div>
+        <strong>Dr. Hazelnut Teo</strong><br>
+        <small>Cardiología Emocional</small>
+      </div>
+    </div>
 
-  <hr>
+    <div id="infoMedico" class="info-box" style="display:none;">
+      Especialista en contención emocional y regaloneo terapéutico.
+    </div>
 
-<h4>Medicación Actual</h4>
+    <hr>
+    <h4>Medicación Actual</h4>
+    <div class="info-box">
+      <ul>
+        <li>Languetazos terapéuticos a demanda</li>
+        <li>Té caliente matinal y vespertino</li>
+        <li>Abrazos controlados</li>
+      </ul>
+    </div>
 
-<div class="info-box">
-  <p><strong>Medicación no farmacológica prescrita:</strong></p>
-  <ul>
-    <li>👅 <strong>Languetazos terapéuticos:</strong> a demanda, según estado anímico.</li>
-    <li>☕ <strong>Té caliente:</strong> administración matinal y vespertina.</li>
-    <li>🤗 <strong>Abrazos controlados:</strong> mínimo 2 por visitante.</li>
-  </ul>
-</div>
-
-  <hr>
-
-<h4>Indicaciones Médicas</h4>
-
-<div class="info-box">
-  <ul>
-    <li>Evitar conversaciones de carácter estresante.</li>
-    <li>Prohibido hablar de política, conflictos o problemas familiares.</li>
-    <li>Mantener un tono de voz bajo y ambiente tranquilo.</li>
-    <li>No interrumpir los períodos de descanso o siesta.</li>
-    <li>Respetar estrictamente los horarios y cupos de visita asignados.</li>
-    <li>Priorizar visitas breves, amorosas y de alta calidad emocional.</li>
-  </ul>
-</div>
-
-
-  <div id="reserva" style="display:none">
-  <hr>
-  <h4>Reserva de Visita</h4>
-
-  <p style="font-size:13px;color:#555;">
-    Las visitas se asignan en bloques horarios según disponibilidad diaria.
-  </p>
-
-  <div style="margin-top:15px;">
+    <hr>
+    <h4>Reserva de Visitas</h4>
     <button onclick="mostrarCalendly()">Reservar visita</button>
-  </div>
 
-  <div id="calendly" style="display:none;margin-top:20px;">
-    <iframe 
-      src="https://calendly.com/mfrq89/30min"
-      width="100%"
-      height="650"
-      frameborder="0"
-      style="border-radius:10px;">
-    </iframe>
+    <div id="calendly" style="display:none;margin-top:15px;">
+      <iframe src="https://calendly.com/mfrq89/30min" height="600"></iframe>
+    </div>
+
   </div>
 </div>
 
 <!-- EQUIPO -->
 <div id="equipo" class="section">
   <h3>Equipo a Cargo</h3>
-  <p><strong>Director del Anexo:</strong> Emilio Riquelme Ramirez</p>
-  <p><strong>Contacto:</strong> +56 9 97975998</p>
-
+  <p><strong>Director:</strong> Emilio Riquelme Ramirez</p>
+  <p><strong>Contacto:</strong> +56 9 9797 5998</p>
   <hr>
-  <p><strong>Soporte técnico:</strong> Carboncito & Negranieves 🐾</p>
+  <p>Soporte emocional: Carboncito & Negranieves 🐾</p>
 </div>
 
 <!-- UBICACIÓN -->
 <div id="ubicacion" class="section">
-  <h3>Ubicación del Anexo</h3>
-  <p>
-    <strong>Dirección:</strong><br>
-    Pasaje Cerro Cordillera 4686, Peñaflor, Santiago
-  </p>
-
-  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.0858591025353!2d-70.88335822437418!3d-33.60307667332938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662e6c85ebc0ee5%3A0x36b025956bcb428c!2sCerro%20Cordillera%202436%2C%209750900%20Penaflor%2C%20Pe%C3%B1aflor%2C%20Regi%C3%B3n%20Metropolitana!5e0!3m2!1ses-419!2scl!4v1769960252880!5m2!1ses-419!2scl" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  <h3>Ubicación</h3>
+  <p>Pasaje Cerro Cordillera 4686, Peñaflor</p>
+  <iframe 
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.0858591025353!2d-70.88335822437418!3d-33.60307667332938"
+    height="300">
+  </iframe>
 </div>
 
 </div>
@@ -301,89 +221,35 @@ iframe {
 <script>
 const PACIENTE_RUT = "6921444-4";
 const PACIENTE_FECHA = "1951-01-06";
-const MAX_VISITAS = 3;
-
-function hoy() {
-  return new Date().toISOString().split('T')[0];
-}
-
-function visitasHoy() {
-  const data = JSON.parse(localStorage.getItem("visitas") || "[]");
-  return data.filter(v => v.fecha === hoy());
-}
-
-function actualizarCupos() {
-  const restantes = MAX_VISITAS - visitasHoy().length;
-  document.getElementById("cupos").innerHTML =
-    restantes > 0
-    ? `Cupos disponibles hoy: ${restantes}`
-    : `<span class="badge">Cupos llenos</span>`;
-}
 
 function login() {
-  const rut = document.getElementById("rut").value;
-  const fecha = document.getElementById("fecha").value;
-
-  if (rut === PACIENTE_RUT && fecha === PACIENTE_FECHA) {
+  if (
+    document.getElementById("rut").value === PACIENTE_RUT &&
+    document.getElementById("fecha").value === PACIENTE_FECHA
+  ) {
     document.getElementById("login").style.display = "none";
     document.getElementById("ficha").style.display = "block";
-    document.getElementById("reserva").style.display = "block";
-    actualizarCupos();
-    cargarHistorial();
   } else {
-    alert("Datos del paciente incorrectos");
+    alert("Datos incorrectos");
   }
 }
 
-function reservar() {
-  const nombre = document.getElementById("nombre").value;
-  if (!nombre) return alert("Ingrese nombre del visitante");
-
-  if (visitasHoy().length >= MAX_VISITAS) {
-    document.getElementById("mensaje").innerText = "No hay cupos disponibles hoy";
-    return;
-  }
-
-  const data = JSON.parse(localStorage.getItem("visitas") || "[]");
-  data.push({
-    nombre,
-    fecha: hoy(),
-    hora: new Date().toLocaleTimeString()
-  });
-  localStorage.setItem("visitas", JSON.stringify(data));
-
-  document.getElementById("mensaje").innerText = "Visita registrada correctamente";
-  actualizarCupos();
-  cargarHistorial();
+function toggleMedico() {
+  const m = document.getElementById("infoMedico");
+  m.style.display = m.style.display === "none" ? "block" : "none";
 }
+
 function mostrarCalendly() {
   document.getElementById("calendly").style.display = "block";
 }
 
-function cargarHistorial() {
-  const lista = document.getElementById("lista");
-  lista.innerHTML = "";
-  visitasHoy().forEach(v => {
-    const li = document.createElement("li");
-    li.innerText = `${v.nombre} – ${v.hora}`;
-    lista.appendChild(li);
-  });
-}
-
-function toggleMedico() {
-  const info = document.getElementById("infoMedico");
-  info.style.display = info.style.display === "none" ? "block" : "none";
-}
-
-function openTab(id) {
+function openTab(id, el) {
   document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
   document.querySelectorAll(".nav div").forEach(n => n.classList.remove("active"));
   document.getElementById(id).classList.add("active");
-  event.target.classList.add("active");
+  el.classList.add("active");
 }
 </script>
 
 </body>
 </html>
-
-
