@@ -158,23 +158,44 @@ iframe {
   </div>
 
   <div id="ficha" style="display:none">
-    <hr>
-    <h4>Ficha del Paciente</h4>
-    <p><strong>Nombre:</strong> Margarita De Las Mercedes Arriaza Zamorano 💙</p>
-    <p><strong>Fecha de nacimiento:</strong> 06 de enero de 1951</p>
-    <p><strong>Fecha de ingreso residencia:</strong> 01 de febrero de 2026</p>
-    <p><strong>Unidad:</strong> Recuperación Cardíaca Domiciliaria</p>
-    <p>
-      <strong>Médico tratante:</strong>
-      <span class="link" onclick="toggleMedico()">Dr. Hazelnut Teo</span>
-    </p>
 
-    <div id="infoMedico" class="info-box" style="display:none">
-      <strong>Dr. Hazelnut Teo</strong><br>
-      Especialista en Cardiología Emocional y Cariñología Avanzada.<br>
-      Experto en contención, regaloneo terapéutico y seguimiento post-alta.
+  <hr>
+  <h4>Ficha Clínica del Paciente</h4>
+
+  <div class="info-box" style="display:flex;align-items:center;gap:10px;">
+    <img src="images/paciente.jpg" alt="Paciente" style="width:60px;height:60px;border-radius:50%;border:2px solid #007bff;">
+    <div>
+      <strong>Margarita De Las Mercedes Arriaza Zamorano</strong><br>
+      <small>RUT: 6.921.444-4</small>
     </div>
   </div>
+
+  <p><strong>Fecha de nacimiento:</strong> 06 de enero de 1951</p>
+  <p><strong>Fecha de ingreso:</strong> 01 de febrero de 2026</p>
+  <p><strong>Unidad:</strong> Recuperación Cardíaca Domiciliaria</p>
+
+  <hr>
+
+  <h4>Médico Tratante</h4>
+
+  <div class="info-box" style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="toggleMedico()">
+    <img src="images/doctor-teo.jpg" alt="Dr Teo" style="width:60px;height:60px;border-radius:50%;border:2px solid #28a745;">
+    <div>
+      <strong>Dr. Hazelnut Teo</strong><br>
+      <small>Cardiología Emocional</small>
+    </div>
+  </div>
+
+  <div id="infoMedico" class="info-box" style="display:none;margin-top:10px;">
+    <img src="images/corazon.png" style="width:30px;float:right;">
+    <strong>Dr. Hazelnut Teo</strong><br>
+    Especialista en Cardiología Emocional y Cariñología Avanzada.<br>
+    Experto en contención afectiva, seguimiento post-alta y regaloneo terapéutico.<br><br>
+    <small>Registro Profesional Interno N° 001-ARUC</small>
+  </div>
+
+</div>
+
 
   <div id="reserva" style="display:none">
   <hr>
