@@ -36,7 +36,7 @@ body {
   text-align:center;
   cursor:pointer;
   font-weight:bold;
-  font-size:12px;
+  font-size:11px;
   color:#555;
 }
 .nav div.active {
@@ -96,6 +96,12 @@ ul {
   margin-top:10px;
   font-size:13px;
 }
+iframe {
+  width:100%;
+  height:250px;
+  border:0;
+  border-radius:10px;
+}
 </style>
 </head>
 
@@ -112,6 +118,7 @@ ul {
   <div class="active" onclick="openTab('inicio')">RESIDENCIA</div>
   <div onclick="openTab('paciente')">PACIENTE</div>
   <div onclick="openTab('equipo')">EQUIPO</div>
+  <div onclick="openTab('ubicacion')">UBICACIÓN</div>
 </div>
 
 <!-- RESIDENCIA -->
@@ -133,8 +140,6 @@ ul {
     👉 <strong>Para reservar un cupo de visita debe dirigirse a la sección
     <em>Paciente</em>.</strong>
   </p>
-
-  <p><strong>Estado actual:</strong> Paciente en domicilio – modo recuperación.</p>
 </div>
 
 <!-- PACIENTE -->
@@ -152,13 +157,12 @@ ul {
     <button onclick="login()">Ingresar</button>
   </div>
 
-  <!-- FICHA -->
   <div id="ficha" style="display:none">
     <hr>
     <h4>Ficha del Paciente</h4>
-    <p><strong>Nombre:</strong> Abuelita 💙</p>
+    <p><strong>Nombre:</strong> Margarita De Las Mercedes Arriaza Zamorano 💙</p>
     <p><strong>Fecha de nacimiento:</strong> 06 de enero de 1951</p>
-    <p><strong>Fecha de ingreso:</strong> 01 de febrero de 2026</p>
+    <p><strong>Fecha de ingreso residencia:</strong> 01 de febrero de 2026</p>
     <p><strong>Unidad:</strong> Recuperación Cardíaca Domiciliaria</p>
     <p>
       <strong>Médico tratante:</strong>
@@ -172,7 +176,6 @@ ul {
     </div>
   </div>
 
-  <!-- RESERVA -->
   <div id="reserva" style="display:none">
     <hr>
     <h4>Reserva de Visita</h4>
@@ -190,15 +193,22 @@ ul {
 <!-- EQUIPO -->
 <div id="equipo" class="section">
   <h3>Equipo a Cargo</h3>
-
-  <p><strong>Médico tratante:</strong> Dr. Hazelnut Teo</p>
-  <p>Especialista en Cardiología Emocional y Cariñología Avanzada.</p>
+  <p><strong>Director del Anexo:</strong> Emilio Riquelme Ramirez</p>
+  <p><strong>Contacto:</strong> +56 9 97975998</p>
 
   <hr>
+  <p><strong>Soporte técnico:</strong> Carboncito & Negranieves 🐾</p>
+</div>
 
-  <p><strong>Director del Anexo:</strong> Papá</p>
-  <p><strong>Soporte técnico de la página:</strong> Carboncito & Negranieves</p>
-  <p><strong>Contacto dirección:</strong> +56 9 XXXXXXXX</p>
+<!-- UBICACIÓN -->
+<div id="ubicacion" class="section">
+  <h3>Ubicación del Anexo</h3>
+  <p>
+    <strong>Dirección:</strong><br>
+    Pasaje Cerro Cordillera 4686, Peñaflor, Santiago
+  </p>
+
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.0858591025353!2d-70.88335822437418!3d-33.60307667332938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662e6c85ebc0ee5%3A0x36b025956bcb428c!2sCerro%20Cordillera%202436%2C%209750900%20Penaflor%2C%20Pe%C3%B1aflor%2C%20Regi%C3%B3n%20Metropolitana!5e0!3m2!1ses-419!2scl!4v1769960252880!5m2!1ses-419!2scl" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>
 
 </div>
@@ -251,7 +261,7 @@ function reservar() {
 
   const data = JSON.parse(localStorage.getItem("visitas") || "[]");
   data.push({
-    nombre: nombre,
+    nombre,
     fecha: hoy(),
     hora: new Date().toLocaleTimeString()
   });
@@ -287,4 +297,5 @@ function openTab(id) {
 
 </body>
 </html>
+
 
