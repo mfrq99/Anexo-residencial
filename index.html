@@ -5,8 +5,133 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Anexo Residencial UC Christus</title>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f6fa;
+  margin: 0;
+}
+header {
+  background: #0056b3;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+section {
+  background: white;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 10px;
+}
+button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button.danger { background: #dc3545; }
+input {
+  width: 100%;
+  padding: 7px;
+  margin: 5px 0;
+}
+details {
+  margin-top: 10px;
+}
+.confirm {
+  color: green;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>Anexo Residencial UC Christus</h2>
+<p>Gestión interna de paciente</p>
+</header>
+
+<!-- LOGIN -->
+<section id="login">
+<h3>Acceso Paciente</h3>
+<p><small>Ingrese RUT sin puntos y con guión</small></p>
+<input id="rut" placeholder="6921444-4">
+<input id="fecha" placeholder="1951-01-06" type="date">
+<button onclick="login()">Ingresar</button>
+<p id="loginError" style="color:red"></p>
+</section>
+
+<!-- PACIENTE -->
+<section id="paciente" style="display:none">
+<h3>👵 Ficha del Paciente</h3>
+<p><b>Nombre:</b> Abuelita VIP</p>
+<p><b>Ingreso:</b> Enero 2026</p>
+<p><b>Unidad:</b> Anexo Residencial UC Christus</p>
+
+<p>
+<b>Médico tratante:</b>
+<a href="#" onclick="verDoctor()">Dr. Hazelnut Teo</a>
+</p>
+
+<details>
+<summary>💊 Medicación</summary>
+<ul id="listaMedicacion"></ul>
+</details>
+
+<details>
+<summary>🩺 Controles</summary>
+<ul id="listaControles"></ul>
+</details>
+
+<details>
+<summary>🧪 Exámenes</summary>
+<ul id="listaExamenes"></ul>
+</details>
+
+<details>
+<summary>📈 Toma de Presión</summary>
+<ul id="listaPresion"></ul>
+</details>
+
+<a href="https://calendly.com/mfrq89/30min" target="_blank">
+<button>📅 Reservar visita</button>
+</a>
+</section>
+
+<!-- EQUIPO MÉDICO -->
+<section id="equipo">
+<h3>👨‍⚕️ Equipo Médico</h3>
+
+<h4>Agregar Medicación</h4>
+<input id="medNombre" placeholder="Medicamento">
+<input id="medHorario" placeholder="Horario">
+<button onclick="agregarMedicacion()">Guardar</button>
+
+<h4>Agregar Control</h4>
+<input id="controlNombre" placeholder="Control">
+<input id="controlFecha" type="datetime-local">
+<button onclick="agregarControl()">Guardar</button>
+
+<h4>Agregar Examen</h4>
+<input id="examNombre" placeholder="Examen">
+<input id="examFecha" type="datetime-local">
+<button onclick="agregarExamen()">Guardar</button>
+
+<h4>Toma de Presión</h4>
+<input id="p1" placeholder="Medición 1">
+<input id="p2" placeholder="Medición 2">
+<input id="p3" placeholder="Medición 3">
+<button onclick="agregarPresion()">Guardar</button>
+
+<p id="confirmacion" class="confirm"></p>
+</section>
 
 <script>
 const firebaseConfig = {
@@ -14,226 +139,98 @@ const firebaseConfig = {
   authDomain: "residencial-6b6b7.firebaseapp.com",
   databaseURL: "https://residencial-6b6b7-default-rtdb.firebaseio.com",
   projectId: "residencial-6b6b7",
-  storageBucket: "residencial-6b6b7.firebasestorage.app",
+  storageBucket: "residencial-6b6b7.appspot.com",
   messagingSenderId: "171840259391",
   appId: "1:171840259391:web:c8d26aec2fc91f8058bf8a"
 };
+
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const db = firebase.database();
 
-/* CREDENCIALES */
-const PACIENTE_RUT = "6921444-4";
-const PACIENTE_FECHA = "1951-01-06";
-const CLAVE_EQUIPO = "equipo123";
-</script>
+function login() {
+  const rut = document.getElementById("rut").value;
+  const fecha = document.getElementById("fecha").value;
 
-<style>
-body{font-family:Segoe UI;background:#eef2f7;margin:0;padding:10px}
-.container{max-width:500px;margin:auto;background:white;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,.1)}
-.header{background:#007bff;color:white;padding:20px;text-align:center}
-.nav{display:flex;background:#f8f9fa}
-.nav div{flex:1;padding:10px;text-align:center;cursor:pointer;font-weight:bold;font-size:11px}
-.nav div.active{background:white;color:#007bff;border-bottom:3px solid #007bff}
-.section{display:none;padding:20px}
-.section.active{display:block}
-input,textarea,button{width:100%;padding:10px;margin:6px 0;border-radius:6px;border:1px solid #ccc}
-button{background:#28a745;color:white;font-weight:bold;border:none}
-.info-box{background:#f1f8ff;padding:10px;border-radius:8px;margin-top:10px}
-ul{padding-left:20px}
-hr{border:none;border-top:1px solid #eee;margin:15px 0}
-</style>
-</head>
-
-<body>
-<div class="container">
-
-<div class="header">
-<h2>Anexo Residencial UC Christus</h2>
-<small>Unidad de Recuperación y Regaloneo</small>
-</div>
-
-<div class="nav">
-<div class="active" onclick="openTab('inicio',this)">RESIDENCIA</div>
-<div onclick="openTab('paciente',this)">PACIENTE</div>
-<div onclick="openTab('equipo',this)">EQUIPO</div>
-</div>
-
-<!-- INICIO -->
-<div id="inicio" class="section active">
-<div class="info-box">Seleccione una sección</div>
-</div>
-
-<!-- PACIENTE -->
-<div id="paciente" class="section">
-<h3>Acceso Paciente</h3>
-
-<input id="rutPaciente" placeholder="RUT">
-<input type="date" id="fechaPaciente">
-<button onclick="loginPaciente()">Ingresar</button>
-
-<div id="ficha" style="display:none">
-
-<hr>
-<div class="info-box">
-<b>Margarita Arriaza</b><br>
-Nacimiento: 06-01-1951<br>
-Médico tratante: Dr. Hazelnut Teo
-</div>
-
-<hr><h4>💊 Medicación</h4>
-<ul id="listaMedicacion"></ul>
-
-<hr><h4>🩸 Presión Arterial</h4>
-<ul id="listaPresion"></ul>
-
-<hr><h4>📋 Controles</h4>
-<ul id="listaControlesPaciente"></ul>
-
-<hr><h4>🧪 Exámenes</h4>
-<ul id="listaExamenesPaciente"></ul>
-
-</div>
-</div>
-
-<!-- EQUIPO -->
-<div id="equipo" class="section">
-<h3>Acceso Equipo Médico</h3>
-
-<input type="password" id="claveEquipo" placeholder="Clave equipo">
-<button onclick="loginEquipo()">Ingresar</button>
-
-<div id="panelEquipo" style="display:none">
-
-<hr><h4>💊 Medicación</h4>
-<input id="medNombre" placeholder="Medicamento">
-<input id="medHorarios" placeholder="Horarios ej 08:00,14:00">
-<textarea id="medIndicacion" placeholder="Indicaciones"></textarea>
-<button onclick="agregarMedicacion()">Agregar</button>
-<ul id="listaMedicacionEquipo"></ul>
-
-<hr><h4>🩸 Presión Arterial</h4>
-<input type="date" id="presionFecha">
-<input type="time" id="presionHora">
-<input id="s1" placeholder="Sistólica 1">
-<input id="d1" placeholder="Diastólica 1">
-<input id="s2" placeholder="Sistólica 2">
-<input id="d2" placeholder="Diastólica 2">
-<input id="s3" placeholder="Sistólica 3">
-<input id="d3" placeholder="Diastólica 3">
-<button onclick="agregarPresion()">Agregar</button>
-
-<hr><h4>📋 Controles</h4>
-<input id="controlDesc" placeholder="Descripción">
-<input type="date" id="controlFecha">
-<input type="time" id="controlHora">
-<button onclick="agregarControl()">Agregar</button>
-
-<hr><h4>🧪 Exámenes</h4>
-<input id="examenDesc" placeholder="Descripción">
-<input type="date" id="examenFecha">
-<input type="time" id="examenHora">
-<button onclick="agregarExamen()">Agregar</button>
-
-</div>
-</div>
-
-<script>
-function openTab(id,el){
- document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
- document.querySelectorAll('.nav div').forEach(n=>n.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- el.classList.add('active');
+  if (rut === "6921444-4" && fecha === "1951-01-06") {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("paciente").style.display = "block";
+    cargarDatos();
+  } else {
+    document.getElementById("loginError").innerText = "Datos incorrectos";
+  }
 }
 
-/* LOGIN */
-function loginPaciente(){
- if(rutPaciente.value===PACIENTE_RUT && fechaPaciente.value===PACIENTE_FECHA){
-  document.getElementById("ficha").style.display="block";
- } else alert("Datos incorrectos");
+function verDoctor() {
+  alert("Dr. Hazelnut Teo\nEspecialista en cariño, contención y abrazos terapéuticos 🫶");
 }
 
-function loginEquipo(){
- if(claveEquipo.value===CLAVE_EQUIPO){
-  document.getElementById("panelEquipo").style.display="block";
- } else alert("Clave incorrecta");
+/* ===== AGREGAR ===== */
+function agregarMedicacion() {
+  db.ref("medicacion").push({
+    nombre: medNombre.value,
+    horario: medHorario.value
+  });
+  confirmar("Medicamento guardado");
 }
 
-/* FUNCIONES */
-function agregarMedicacion(){
- database.ref("medicacion").push({
-  nombre:medNombre.value,
-  horarios:medHorarios.value.split(","),
-  indicacion:medIndicacion.value
- });
- medNombre.value=medHorarios.value=medIndicacion.value="";
+function agregarControl() {
+  db.ref("controles").push({
+    nombre: controlNombre.value,
+    fecha: controlFecha.value
+  });
+  confirmar("Control guardado");
 }
 
-function agregarPresion(){
- database.ref("presion").push({
-  fecha:presionFecha.value,
-  hora:presionHora.value,
-  mediciones:[
-   {s:s1.value,d:d1.value},
-   {s:s2.value,d:d2.value},
-   {s:s3.value,d:d3.value}
-  ]
- });
+function agregarExamen() {
+  db.ref("examenes").push({
+    nombre: examNombre.value,
+    fecha: examFecha.value
+  });
+  confirmar("Examen guardado");
 }
 
-function agregarControl(){
- database.ref("controles").push({
-  descripcion:controlDesc.value,
-  fecha:controlFecha.value,
-  hora:controlHora.value
- });
+function agregarPresion() {
+  db.ref("presion").push({
+    m1: p1.value,
+    m2: p2.value,
+    m3: p3.value,
+    fecha: new Date().toLocaleString()
+  });
+  confirmar("Presión registrada");
 }
 
-function agregarExamen(){
- database.ref("examenes").push({
-  descripcion:examenDesc.value,
-  fecha:examenFecha.value,
-  hora:examenHora.value
- });
+/* ===== CARGAR ===== */
+function cargarDatos() {
+  cargar("medicacion", "listaMedicacion", d => `${d.nombre} - ${d.horario}`);
+  cargar("controles", "listaControles", d => `${d.nombre} (${d.fecha})`);
+  cargar("examenes", "listaExamenes", d => `${d.nombre} (${d.fecha})`);
+  cargar("presion", "listaPresion", d => 
+    `🕒 ${d.fecha}: ${d.m1} / ${d.m2} / ${d.m3}`);
 }
 
-/* LISTENERS */
-database.ref("medicacion").on("value",s=>{
- listaMedicacion.innerHTML="";
- listaMedicacionEquipo.innerHTML="";
- s.forEach(i=>{
-  const d=i.val();
-  listaMedicacion.innerHTML+=`<li>💊 ${d.nombre}<br>⏰ ${d.horarios.join(" / ")}</li>`;
-  listaMedicacionEquipo.innerHTML+=`<li>${d.nombre}</li>`;
- });
-});
+function cargar(ruta, listaId, formato) {
+  const ul = document.getElementById(listaId);
+  db.ref(ruta).on("value", snap => {
+    ul.innerHTML = "";
+    snap.forEach(s => {
+      const li = document.createElement("li");
+      li.innerHTML = formato(s.val()) +
+        ` <button class="danger" onclick="eliminar('${ruta}','${s.key}')">X</button>`;
+      ul.appendChild(li);
+    });
+  });
+}
 
-database.ref("presion").on("value",s=>{
- listaPresion.innerHTML="";
- s.forEach(i=>{
-  const d=i.val();
-  listaPresion.innerHTML+=`
-  <li>${d.fecha} ${d.hora}<br>
-  1️⃣ ${d.mediciones[0].s}/${d.mediciones[0].d} |
-  2️⃣ ${d.mediciones[1].s}/${d.mediciones[1].d} |
-  3️⃣ ${d.mediciones[2].s}/${d.mediciones[2].d}</li>`;
- });
-});
+function eliminar(ruta, key) {
+  if (confirm("¿Eliminar registro?")) {
+    db.ref(`${ruta}/${key}`).remove();
+  }
+}
 
-database.ref("controles").on("value",s=>{
- listaControlesPaciente.innerHTML="";
- s.forEach(i=>{
-  const d=i.val();
-  listaControlesPaciente.innerHTML+=`<li>📋 ${d.descripcion} ${d.fecha} ${d.hora}</li>`;
- });
-});
-
-database.ref("examenes").on("value",s=>{
- listaExamenesPaciente.innerHTML="";
- s.forEach(i=>{
-  const d=i.val();
-  listaExamenesPaciente.innerHTML+=`<li>🧪 ${d.descripcion} ${d.fecha} ${d.hora}</li>`;
- });
-});
+function confirmar(msg) {
+  document.getElementById("confirmacion").innerText = msg;
+  setTimeout(()=>confirmacion.innerText="", 3000);
+}
 </script>
 
 </body>
