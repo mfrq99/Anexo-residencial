@@ -66,81 +66,205 @@ hr{border:none;border-top:1px solid #eee;margin:15px 0}
 
 <h3>Acceso Paciente</h3>
 
-<div id="loginBox">
-<input id="rut" placeholder="RUT sin puntos y con guion">
-<input id="fecha" type="date">
-<button onclick="loginPaciente()">Ingresar</button>
+<div id="loginPaciente">
+  <input id="rut" placeholder="Ingrese RUT sin puntos y con guion">
+  <input id="fecha" type="date">
+  <button onclick="loginPaciente()">Ingresar</button>
 </div>
 
 <div id="ficha" style="display:none">
 
+<hr>
 <h4>Ficha Clínica</h4>
 <div class="info-box">
 <b>Margarita De Las Mercedes Arriaza Zamorano</b><br>
 Nacimiento: 06-01-1951<br>
+Ingreso: 25-01-2026<br>
 Unidad: Recuperación Cardíaca Domiciliaria<br>
-Médico: Dr. Hazelnut Teo
+Médico tratante: <b>Dr. Hazelnut Teo</b>
 </div>
 
 <hr>
-<h4>Medicación</h4>
+<h4>Diagnóstico</h4>
+<div class="info-box">
+Recuperación post alta por edema pulmonar. Control estricto de presión arterial y balance hídrico.
+</div>
+
+<hr>
+<h4>💊 Medicación Actual</h4>
 <ul id="listaMedicacion"></ul>
 
 <hr>
-<h4>Controles</h4>
+<h4>🩸 Presión Arterial</h4>
+<ul id="listaPresion"></ul>
+
+<hr>
+<h4>📋 Controles</h4>
 <ul id="listaControlesPaciente"></ul>
 
 <hr>
-<h4>Exámenes</h4>
+<h4>🧪 Exámenes</h4>
 <ul id="listaExamenesPaciente"></ul>
+
+<hr>
+<h4>👪 Reserva de Visitas</h4>
+<button onclick="document.getElementById('calendly').style.display='block'">
+Reservar visita
+</button>
+
+<div id="calendly" style="display:none;margin-top:10px;">
+<iframe src="https://calendly.com/mfrq89/30min" height="600"></iframe>
+</div>
 
 </div>
 </div>
+
 
 <!-- EQUIPO -->
 <div id="equipo" class="section">
 
 <h3>Equipo Médico</h3>
 
+<!-- MEDICACIÓN -->
 <h4>💊 Medicación</h4>
 <input id="medNombre" placeholder="Nombre medicamento">
-<input id="medHorarios" placeholder="Horarios (ej: 08:00,14:00,20:00)">
-<button onclick="guardarMedicacion()">Guardar</button>
+<input id="medHorarios" placeholder="Horarios (ej: 08:00,14:00,22:00)">
+<textarea id="medIndicacion" placeholder="Indicaciones médicas"></textarea>
+<button onclick="agregarMedicacion()">Agregar</button>
 <ul id="listaMedicacionEquipo"></ul>
 
 <hr>
 
+<!-- PRESIÓN -->
+<h4>🩸 Control Presión Arterial</h4>
+<input type="date" id="presionFecha">
+<input type="time" id="presionHora">
+
+<input id="s1" placeholder="1ª sistólica">
+<input id="d1" placeholder="1ª diastólica">
+
+<input id="s2" placeholder="2ª sistólica">
+<input id="d2" placeholder="2ª diastólica">
+
+<input id="s3" placeholder="3ª sistólica">
+<input id="d3" placeholder="3ª diastólica">
+
+<button onclick="agregarPresion()">Agregar</button>
+
+<hr>
+
+<!-- CONTROLES -->
 <h4>📋 Controles</h4>
 <input id="controlDesc" placeholder="Descripción">
-<input id="controlFecha" type="date">
-<input id="controlHora" type="time">
+<input type="date" id="controlFecha">
+<input type="time" id="controlHora">
 <button onclick="agregarControl()">Agregar</button>
 <ul id="listaControles"></ul>
 
 <hr>
 
+<!-- EXÁMENES -->
 <h4>🧪 Exámenes</h4>
 <input id="examenDesc" placeholder="Descripción">
-<input id="examenFecha" type="date">
-<input id="examenHora" type="time">
+<input type="date" id="examenFecha">
+<input type="time" id="examenHora">
 <button onclick="agregarExamen()">Agregar</button>
 <ul id="listaExamenes"></ul>
 
 </div>
 
-</div>
 
 <script>
-const PACIENTE_RUT="6921444-4";
-const PACIENTE_FECHA="1951-01-06";
-
+/* LOGIN PACIENTE */
 function loginPaciente(){
-  if(rut.value===PACIENTE_RUT && fecha.value===PACIENTE_FECHA){
-    loginBox.style.display="none";
-    ficha.style.display="block";
-  } else alert("Datos incorrectos");
+  if(rut.value === PACIENTE_RUT && fecha.value === PACIENTE_FECHA){
+    document.getElementById("loginPaciente").style.display = "none";
+    document.getElementById("ficha").style.display = "block";
+  } else {
+    alert("Datos incorrectos");
+  }
 }
 
+/* MEDICACIÓN */
+function agregarMedicacion(){
+  const horarios = medHorarios.value.split(",").map(h => h.trim());
+
+  database.ref("equipo_medico/medicacion").push({
+    nombre: medNombre.value,
+    horarios: horarios,
+    indicacion: medIndicacion.value
+  });
+
+  medNombre.value = medHorarios.value = medIndicacion.value = "";
+}
+/* CONTROLES */
+function agregarControl(){
+  database.ref("equipo_medico/controles").push({
+    descripcion: controlDesc.value,
+    fecha: controlFecha.value,
+    hora: controlHora.value
+  });
+}
+
+/* EXÁMENES */
+function agregarExamen(){
+  database.ref("equipo_medico/examenes").push({
+    descripcion: examenDesc.value,
+    fecha: examenFecha.value,
+    hora: examenHora.value
+  });
+}
+
+/* LISTENERS */
+database.ref("equipo_medico/medicacion").on("value", snap=>{
+  listaMedicacion.innerHTML = "";
+  listaMedicacionEquipo.innerHTML = "";
+  snap.forEach(i=>{
+    const d = i.val();
+    listaMedicacion.innerHTML += `
+      <li>💊 <b>${d.nombre}</b><br>
+      ⏰ ${d.horarios.join(" / ")}<br>
+      📝 ${d.indicacion || ""}</li>`;
+    listaMedicacionEquipo.innerHTML += `
+      <li>${d.nombre}
+      <button onclick="database.ref('equipo_medico/medicacion/${i.key}').remove()">🗑️</button></li>`;
+  });
+});
+
+database.ref("equipo_medico/presion").on("value", snap=>{
+  listaPresion.innerHTML = "";
+  snap.forEach(i=>{
+    const d = i.val();
+    listaPresion.innerHTML += `
+      <li>📅 ${d.fecha} ⏰ ${d.hora}<br>
+      1️⃣ ${d.mediciones[0].sistolica}/${d.mediciones[0].diastolica}<br>
+      2️⃣ ${d.mediciones[1].sistolica}/${d.mediciones[1].diastolica}<br>
+      3️⃣ ${d.mediciones[2].sistolica}/${d.mediciones[2].diastolica}</li>`;
+  });
+});
+
+database.ref("equipo_medico/controles").on("value", snap=>{
+  listaControles.innerHTML = "";
+  listaControlesPaciente.innerHTML = "";
+  snap.forEach(i=>{
+    const d = i.val();
+    const txt = `📋 ${d.descripcion} — ${d.fecha} ${d.hora}`;
+    listaControles.innerHTML += `<li>${txt}</li>`;
+    listaControlesPaciente.innerHTML += `<li>${txt}</li>`;
+  });
+});
+
+database.ref("equipo_medico/examenes").on("value", snap=>{
+  listaExamenes.innerHTML = "";
+  listaExamenesPaciente.innerHTML = "";
+  snap.forEach(i=>{
+    const d = i.val();
+    const txt = `🧪 ${d.descripcion} — ${d.fecha} ${d.hora}`;
+    listaExamenes.innerHTML += `<li>${txt}</li>`;
+    listaExamenesPaciente.innerHTML += `<li>${txt}</li>`;
+  });
+});
+  
 function openTab(id,el){
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.querySelectorAll(".nav div").forEach(n=>n.classList.remove("active"));
