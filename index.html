@@ -18,14 +18,18 @@ const firebaseConfig = {
   messagingSenderId: "171840259391",
   appId: "1:171840259391:web:c8d26aec2fc91f8058bf8a"
 };
-
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
+
+/* CREDENCIALES */
+const PACIENTE_RUT = "6921444-4";
+const PACIENTE_FECHA = "1951-01-06";
+const CLAVE_EQUIPO = "equipo123";
 </script>
 
 <style>
-body { font-family:'Segoe UI',sans-serif;background:#eef2f7;margin:0;padding:10px }
-.container{max-width:500px;margin:auto;background:white;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,.1);overflow:hidden}
+body{font-family:Segoe UI;background:#eef2f7;margin:0;padding:10px}
+.container{max-width:500px;margin:auto;background:white;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,.1)}
 .header{background:#007bff;color:white;padding:20px;text-align:center}
 .nav{display:flex;background:#f8f9fa}
 .nav div{flex:1;padding:10px;text-align:center;cursor:pointer;font-weight:bold;font-size:11px}
@@ -34,8 +38,8 @@ body { font-family:'Segoe UI',sans-serif;background:#eef2f7;margin:0;padding:10p
 .section.active{display:block}
 input,textarea,button{width:100%;padding:10px;margin:6px 0;border-radius:6px;border:1px solid #ccc}
 button{background:#28a745;color:white;font-weight:bold;border:none}
-ul{padding-left:20px}
 .info-box{background:#f1f8ff;padding:10px;border-radius:8px;margin-top:10px}
+ul{padding-left:20px}
 hr{border:none;border-top:1px solid #eee;margin:15px 0}
 </style>
 </head>
@@ -51,290 +55,184 @@ hr{border:none;border-top:1px solid #eee;margin:15px 0}
 <div class="nav">
 <div class="active" onclick="openTab('inicio',this)">RESIDENCIA</div>
 <div onclick="openTab('paciente',this)">PACIENTE</div>
-<div onclick="openTab('equipo',this)">EQUIPO MÉDICO</div>
+<div onclick="openTab('equipo',this)">EQUIPO</div>
 </div>
 
-<!-- RESIDENCIA -->
+<!-- INICIO -->
 <div id="inicio" class="section active">
-<div class="info-box">
-👉 Para ver ficha clínica o reservar visitas debe ingresar a <b>Paciente</b>.
-</div>
+<div class="info-box">Seleccione una sección</div>
 </div>
 
 <!-- PACIENTE -->
 <div id="paciente" class="section">
-
 <h3>Acceso Paciente</h3>
 
-<div id="loginPaciente">
-  <input id="rut" placeholder="Ingrese RUT sin puntos y con guion">
-  <input id="fecha" type="date">
-  <button onclick="loginPaciente()">Ingresar</button>
-</div>
+<input id="rutPaciente" placeholder="RUT">
+<input type="date" id="fechaPaciente">
+<button onclick="loginPaciente()">Ingresar</button>
 
 <div id="ficha" style="display:none">
 
 <hr>
-<h4>Ficha Clínica</h4>
 <div class="info-box">
-<b>Margarita De Las Mercedes Arriaza Zamorano</b><br>
+<b>Margarita Arriaza</b><br>
 Nacimiento: 06-01-1951<br>
-Ingreso: 25-01-2026<br>
-Unidad: Recuperación Cardíaca Domiciliaria<br>
-Médico tratante: <b>Dr. Hazelnut Teo</b>
+Médico tratante: Dr. Hazelnut Teo
 </div>
 
-<hr>
-<h4>Diagnóstico</h4>
-<div class="info-box">
-Recuperación post alta por edema pulmonar. Control estricto de presión arterial y balance hídrico.
-</div>
-
-<hr>
-<h4>💊 Medicación Actual</h4>
+<hr><h4>💊 Medicación</h4>
 <ul id="listaMedicacion"></ul>
 
-<hr>
-<h4>🩸 Presión Arterial</h4>
+<hr><h4>🩸 Presión Arterial</h4>
 <ul id="listaPresion"></ul>
 
-<hr>
-<h4>📋 Controles</h4>
+<hr><h4>📋 Controles</h4>
 <ul id="listaControlesPaciente"></ul>
 
-<hr>
-<h4>🧪 Exámenes</h4>
+<hr><h4>🧪 Exámenes</h4>
 <ul id="listaExamenesPaciente"></ul>
 
-<hr>
-<h4>👪 Reserva de Visitas</h4>
-<button onclick="document.getElementById('calendly').style.display='block'">
-Reservar visita
-</button>
-
-<div id="calendly" style="display:none;margin-top:10px;">
-<iframe src="https://calendly.com/mfrq89/30min" height="600"></iframe>
-</div>
-
 </div>
 </div>
-
 
 <!-- EQUIPO -->
 <div id="equipo" class="section">
+<h3>Acceso Equipo Médico</h3>
 
-<h3>Equipo Médico</h3>
+<input type="password" id="claveEquipo" placeholder="Clave equipo">
+<button onclick="loginEquipo()">Ingresar</button>
 
-<!-- MEDICACIÓN -->
-<h4>💊 Medicación</h4>
-<input id="medNombre" placeholder="Nombre medicamento">
-<input id="medHorarios" placeholder="Horarios (ej: 08:00,14:00,22:00)">
-<textarea id="medIndicacion" placeholder="Indicaciones médicas"></textarea>
+<div id="panelEquipo" style="display:none">
+
+<hr><h4>💊 Medicación</h4>
+<input id="medNombre" placeholder="Medicamento">
+<input id="medHorarios" placeholder="Horarios ej 08:00,14:00">
+<textarea id="medIndicacion" placeholder="Indicaciones"></textarea>
 <button onclick="agregarMedicacion()">Agregar</button>
 <ul id="listaMedicacionEquipo"></ul>
 
-<hr>
-
-<!-- PRESIÓN -->
-<h4>🩸 Control Presión Arterial</h4>
+<hr><h4>🩸 Presión Arterial</h4>
 <input type="date" id="presionFecha">
 <input type="time" id="presionHora">
-
-<input id="s1" placeholder="1ª sistólica">
-<input id="d1" placeholder="1ª diastólica">
-
-<input id="s2" placeholder="2ª sistólica">
-<input id="d2" placeholder="2ª diastólica">
-
-<input id="s3" placeholder="3ª sistólica">
-<input id="d3" placeholder="3ª diastólica">
-
+<input id="s1" placeholder="Sistólica 1">
+<input id="d1" placeholder="Diastólica 1">
+<input id="s2" placeholder="Sistólica 2">
+<input id="d2" placeholder="Diastólica 2">
+<input id="s3" placeholder="Sistólica 3">
+<input id="d3" placeholder="Diastólica 3">
 <button onclick="agregarPresion()">Agregar</button>
 
-<hr>
-
-<!-- CONTROLES -->
-<h4>📋 Controles</h4>
+<hr><h4>📋 Controles</h4>
 <input id="controlDesc" placeholder="Descripción">
 <input type="date" id="controlFecha">
 <input type="time" id="controlHora">
 <button onclick="agregarControl()">Agregar</button>
-<ul id="listaControles"></ul>
 
-<hr>
-
-<!-- EXÁMENES -->
-<h4>🧪 Exámenes</h4>
+<hr><h4>🧪 Exámenes</h4>
 <input id="examenDesc" placeholder="Descripción">
 <input type="date" id="examenFecha">
 <input type="time" id="examenHora">
 <button onclick="agregarExamen()">Agregar</button>
-<ul id="listaExamenes"></ul>
 
 </div>
-
+</div>
 
 <script>
-/* LOGIN PACIENTE */
-function loginPaciente(){
-  if(rut.value === PACIENTE_RUT && fecha.value === PACIENTE_FECHA){
-    document.getElementById("loginPaciente").style.display = "none";
-    document.getElementById("ficha").style.display = "block";
-  } else {
-    alert("Datos incorrectos");
-  }
-}
-
-/* MEDICACIÓN */
-function agregarMedicacion(){
-  const horarios = medHorarios.value.split(",").map(h => h.trim());
-
-  database.ref("equipo_medico/medicacion").push({
-    nombre: medNombre.value,
-    horarios: horarios,
-    indicacion: medIndicacion.value
-  });
-
-  medNombre.value = medHorarios.value = medIndicacion.value = "";
-}
-/* CONTROLES */
-function agregarControl(){
-  database.ref("equipo_medico/controles").push({
-    descripcion: controlDesc.value,
-    fecha: controlFecha.value,
-    hora: controlHora.value
-  });
-}
-
-/* EXÁMENES */
-function agregarExamen(){
-  database.ref("equipo_medico/examenes").push({
-    descripcion: examenDesc.value,
-    fecha: examenFecha.value,
-    hora: examenHora.value
-  });
-}
-
-/* LISTENERS */
-database.ref("equipo_medico/medicacion").on("value", snap=>{
-  listaMedicacion.innerHTML = "";
-  listaMedicacionEquipo.innerHTML = "";
-  snap.forEach(i=>{
-    const d = i.val();
-    listaMedicacion.innerHTML += `
-      <li>💊 <b>${d.nombre}</b><br>
-      ⏰ ${d.horarios.join(" / ")}<br>
-      📝 ${d.indicacion || ""}</li>`;
-    listaMedicacionEquipo.innerHTML += `
-      <li>${d.nombre}
-      <button onclick="database.ref('equipo_medico/medicacion/${i.key}').remove()">🗑️</button></li>`;
-  });
-});
-
-database.ref("equipo_medico/presion").on("value", snap=>{
-  listaPresion.innerHTML = "";
-  snap.forEach(i=>{
-    const d = i.val();
-    listaPresion.innerHTML += `
-      <li>📅 ${d.fecha} ⏰ ${d.hora}<br>
-      1️⃣ ${d.mediciones[0].sistolica}/${d.mediciones[0].diastolica}<br>
-      2️⃣ ${d.mediciones[1].sistolica}/${d.mediciones[1].diastolica}<br>
-      3️⃣ ${d.mediciones[2].sistolica}/${d.mediciones[2].diastolica}</li>`;
-  });
-});
-
-database.ref("equipo_medico/controles").on("value", snap=>{
-  listaControles.innerHTML = "";
-  listaControlesPaciente.innerHTML = "";
-  snap.forEach(i=>{
-    const d = i.val();
-    const txt = `📋 ${d.descripcion} — ${d.fecha} ${d.hora}`;
-    listaControles.innerHTML += `<li>${txt}</li>`;
-    listaControlesPaciente.innerHTML += `<li>${txt}</li>`;
-  });
-});
-
-database.ref("equipo_medico/examenes").on("value", snap=>{
-  listaExamenes.innerHTML = "";
-  listaExamenesPaciente.innerHTML = "";
-  snap.forEach(i=>{
-    const d = i.val();
-    const txt = `🧪 ${d.descripcion} — ${d.fecha} ${d.hora}`;
-    listaExamenes.innerHTML += `<li>${txt}</li>`;
-    listaExamenesPaciente.innerHTML += `<li>${txt}</li>`;
-  });
-});
-  
 function openTab(id,el){
-  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-  document.querySelectorAll(".nav div").forEach(n=>n.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  el.classList.add("active");
+ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+ document.querySelectorAll('.nav div').forEach(n=>n.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ el.classList.add('active');
 }
 
-function guardarMedicacion(){
-  const horarios = medHorarios.value.split(",").map(h=>h.trim());
-  database.ref("equipo_medico/medicacion").push({
-    nombre:medNombre.value,
-    horarios
-  });
-  medNombre.value=medHorarios.value="";
+/* LOGIN */
+function loginPaciente(){
+ if(rutPaciente.value===PACIENTE_RUT && fechaPaciente.value===PACIENTE_FECHA){
+  document.getElementById("ficha").style.display="block";
+ } else alert("Datos incorrectos");
+}
+
+function loginEquipo(){
+ if(claveEquipo.value===CLAVE_EQUIPO){
+  document.getElementById("panelEquipo").style.display="block";
+ } else alert("Clave incorrecta");
+}
+
+/* FUNCIONES */
+function agregarMedicacion(){
+ database.ref("medicacion").push({
+  nombre:medNombre.value,
+  horarios:medHorarios.value.split(","),
+  indicacion:medIndicacion.value
+ });
+ medNombre.value=medHorarios.value=medIndicacion.value="";
+}
+
+function agregarPresion(){
+ database.ref("presion").push({
+  fecha:presionFecha.value,
+  hora:presionHora.value,
+  mediciones:[
+   {s:s1.value,d:d1.value},
+   {s:s2.value,d:d2.value},
+   {s:s3.value,d:d3.value}
+  ]
+ });
 }
 
 function agregarControl(){
-  database.ref("equipo_medico/controles").push({
-    descripcion:controlDesc.value,
-    fecha:controlFecha.value,
-    hora:controlHora.value
-  });
+ database.ref("controles").push({
+  descripcion:controlDesc.value,
+  fecha:controlFecha.value,
+  hora:controlHora.value
+ });
 }
 
 function agregarExamen(){
-  database.ref("equipo_medico/examenes").push({
-    descripcion:examenDesc.value,
-    fecha:examenFecha.value,
-    hora:examenHora.value
-  });
-}
-
-function borrar(ruta){
-  if(confirm("¿Eliminar?")) database.ref(ruta).remove();
+ database.ref("examenes").push({
+  descripcion:examenDesc.value,
+  fecha:examenFecha.value,
+  hora:examenHora.value
+ });
 }
 
 /* LISTENERS */
-database.ref("equipo_medico/medicacion").on("value",snap=>{
-  listaMedicacion.innerHTML="";
-  listaMedicacionEquipo.innerHTML="";
-  snap.forEach(i=>{
-    const d=i.val();
-    listaMedicacion.innerHTML+=
-      `<li>💊 ${d.nombre}<br>⏰ ${d.horarios.join(", ")}</li>`;
-    listaMedicacionEquipo.innerHTML+=
-      `<li>${d.nombre} (${d.horarios.join(", ")})
-      <button onclick="borrar('equipo_medico/medicacion/${i.key}')">🗑️</button></li>`;
-  });
+database.ref("medicacion").on("value",s=>{
+ listaMedicacion.innerHTML="";
+ listaMedicacionEquipo.innerHTML="";
+ s.forEach(i=>{
+  const d=i.val();
+  listaMedicacion.innerHTML+=`<li>💊 ${d.nombre}<br>⏰ ${d.horarios.join(" / ")}</li>`;
+  listaMedicacionEquipo.innerHTML+=`<li>${d.nombre}</li>`;
+ });
 });
 
-database.ref("equipo_medico/controles").on("value",snap=>{
-  listaControles.innerHTML="";
-  listaControlesPaciente.innerHTML="";
-  snap.forEach(i=>{
-    const d=i.val();
-    const t=`📋 ${d.descripcion} — ${d.fecha} ${d.hora}`;
-    listaControles.innerHTML+=`<li>${t}<button onclick="borrar('equipo_medico/controles/${i.key}')">🗑️</button></li>`;
-    listaControlesPaciente.innerHTML+=`<li>${t}</li>`;
-  });
+database.ref("presion").on("value",s=>{
+ listaPresion.innerHTML="";
+ s.forEach(i=>{
+  const d=i.val();
+  listaPresion.innerHTML+=`
+  <li>${d.fecha} ${d.hora}<br>
+  1️⃣ ${d.mediciones[0].s}/${d.mediciones[0].d} |
+  2️⃣ ${d.mediciones[1].s}/${d.mediciones[1].d} |
+  3️⃣ ${d.mediciones[2].s}/${d.mediciones[2].d}</li>`;
+ });
 });
 
-database.ref("equipo_medico/examenes").on("value",snap=>{
-  listaExamenes.innerHTML="";
-  listaExamenesPaciente.innerHTML="";
-  snap.forEach(i=>{
-    const d=i.val();
-    const t=`🧪 ${d.descripcion} — ${d.fecha} ${d.hora}`;
-    listaExamenes.innerHTML+=`<li>${t}<button onclick="borrar('equipo_medico/examenes/${i.key}')">🗑️</button></li>`;
-    listaExamenesPaciente.innerHTML+=`<li>${t}</li>`;
-  });
+database.ref("controles").on("value",s=>{
+ listaControlesPaciente.innerHTML="";
+ s.forEach(i=>{
+  const d=i.val();
+  listaControlesPaciente.innerHTML+=`<li>📋 ${d.descripcion} ${d.fecha} ${d.hora}</li>`;
+ });
+});
+
+database.ref("examenes").on("value",s=>{
+ listaExamenesPaciente.innerHTML="";
+ s.forEach(i=>{
+  const d=i.val();
+  listaExamenesPaciente.innerHTML+=`<li>🧪 ${d.descripcion} ${d.fecha} ${d.hora}</li>`;
+ });
 });
 </script>
 
