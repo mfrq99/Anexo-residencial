@@ -5,231 +5,249 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Anexo Residencial UC Christus</title>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <style>
 body {
-  font-family: Arial, sans-serif;
-  background: #f2f6fa;
-  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background:#eef2f7;
+  margin:0;
+  padding:10px;
 }
-header {
-  background: #0056b3;
-  color: white;
-  padding: 15px;
-  text-align: center;
+.container {
+  max-width:500px;
+  margin:auto;
+  background:white;
+  border-radius:15px;
+  box-shadow:0 4px 15px rgba(0,0,0,.1);
+  overflow:hidden;
 }
-section {
-  background: white;
-  margin: 15px;
-  padding: 15px;
-  border-radius: 10px;
+.header {
+  background:#007bff;
+  color:white;
+  padding:20px;
+  text-align:center;
+}
+.nav {
+  display:flex;
+  background:#f8f9fa;
+}
+.nav div {
+  flex:1;
+  padding:10px;
+  text-align:center;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:11px;
+  color:#555;
+}
+.nav div.active {
+  background:white;
+  color:#007bff;
+  border-bottom:3px solid #007bff;
+}
+.section {
+  display:none;
+  padding:20px;
+}
+.section.active {
+  display:block;
+}
+input, button {
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:6px;
+  border:1px solid #ccc;
 }
 button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
+  background:#28a745;
+  color:white;
+  font-weight:bold;
+  border:none;
 }
-button.danger { background: #dc3545; }
-input {
-  width: 100%;
-  padding: 7px;
-  margin: 5px 0;
+.badge {
+  background:#dc3545;
+  color:white;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
 }
-details {
-  margin-top: 10px;
+hr {
+  border:none;
+  border-top:1px solid #eee;
+  margin:15px 0;
 }
-.confirm {
-  color: green;
-  font-weight: bold;
+ul {
+  padding-left:20px;
+}
+.help {
+  font-size:12px;
+  color:#666;
+}
+.info-box {
+  background:#f1f8ff;
+  padding:10px;
+  border-radius:8px;
+  margin-top:10px;
+  font-size:13px;
+}
+iframe {
+  width:100%;
+  border:0;
+  border-radius:10px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<h2>Anexo Residencial UC Christus</h2>
-<p>Gestión interna de paciente</p>
-</header>
+<div class="container">
 
-<!-- LOGIN -->
-<section id="login">
-<h3>Acceso Paciente</h3>
-<p><small>Ingrese RUT sin puntos y con guión</small></p>
-<input id="rut" placeholder="6921444-4">
-<input id="fecha" placeholder="1951-01-06" type="date">
-<button onclick="login()">Ingresar</button>
-<p id="loginError" style="color:red"></p>
-</section>
+<div class="header">
+  <h2>Anexo Residencial UC Christus</h2>
+  <small>Unidad de Recuperación y Regaloneo</small>
+</div>
+
+<div class="nav">
+  <div class="active" onclick="openTab('inicio', this)">RESIDENCIA</div>
+  <div onclick="openTab('paciente', this)">PACIENTE</div>
+  <div onclick="openTab('equipo', this)">EQUIPO</div>
+  <div onclick="openTab('ubicacion', this)">UBICACIÓN</div>
+</div>
+
+<!-- RESIDENCIA -->
+<div id="inicio" class="section active">
+  <h3>Descripción de la Residencia</h3>
+  <p>
+    Unidad de recuperación domiciliaria post-alta, orientada al bienestar,
+    estabilidad emocional y cuidado integral de la paciente.
+  </p>
+  <p style="background:#fff3cd;padding:10px;border-radius:6px;">
+    👉 Para reservar visitas debe ingresar a la sección <strong>Paciente</strong>.
+  </p>
+</div>
 
 <!-- PACIENTE -->
-<section id="paciente" style="display:none">
-<h3>👵 Ficha del Paciente</h3>
-<p><b>Nombre:</b> Abuelita VIP</p>
-<p><b>Ingreso:</b> Enero 2026</p>
-<p><b>Unidad:</b> Anexo Residencial UC Christus</p>
+<div id="paciente" class="section">
 
-<p>
-<b>Médico tratante:</b>
-<a href="#" onclick="verDoctor()">Dr. Hazelnut Teo</a>
-</p>
+  <h3>Acceso Paciente</h3>
 
-<details>
-<summary>💊 Medicación</summary>
-<ul id="listaMedicacion"></ul>
-</details>
+  <div id="login">
+    <input id="rut" placeholder="RUT del paciente">
+    <div class="help">Ingrese RUT sin puntos y con guion</div>
+    <input id="fecha" type="date">
+    <button onclick="login()">Ingresar</button>
+  </div>
 
-<details>
-<summary>🩺 Controles</summary>
-<ul id="listaControles"></ul>
-</details>
+  <div id="ficha" style="display:none">
 
-<details>
-<summary>🧪 Exámenes</summary>
-<ul id="listaExamenes"></ul>
-</details>
+    <hr>
+    <h4>Ficha Clínica</h4>
 
-<details>
-<summary>📈 Toma de Presión</summary>
-<ul id="listaPresion"></ul>
-</details>
+    <div class="info-box" style="display:flex;gap:10px;align-items:center;">
+      <img src="images/paciente.jpg" style="width:60px;height:60px;border-radius:50%;">
+      <div>
+        <strong>Margarita De Las Mercedes Arriaza Zamorano</strong><br>
+        <small>RUT: 6.921.444-4</small>
+      </div>
+    </div>
 
-<a href="https://calendly.com/mfrq89/30min" target="_blank">
-<button>📅 Reservar visita</button>
-</a>
-</section>
+    <p><strong>Nacimiento:</strong> 06-01-1951</p>
+    <p><strong>Ingreso:</strong> 01-02-2026</p>
+    <p><strong>Unidad:</strong> Recuperación Cardíaca Domiciliaria</p>
 
-<!-- EQUIPO MÉDICO -->
-<section id="equipo">
-<h3>👨‍⚕️ Equipo Médico</h3>
+    <hr>
+    <h4>Diagnóstico</h4>
+    <div class="info-box">
+      Recuperación post-alta cardíaca en ambiente familiar controlado.
+    </div>
 
-<h4>Agregar Medicación</h4>
-<input id="medNombre" placeholder="Medicamento">
-<input id="medHorario" placeholder="Horario">
-<button onclick="agregarMedicacion()">Guardar</button>
+    <hr>
+    <h4>Médico Tratante</h4>
 
-<h4>Agregar Control</h4>
-<input id="controlNombre" placeholder="Control">
-<input id="controlFecha" type="datetime-local">
-<button onclick="agregarControl()">Guardar</button>
+    <div class="info-box" onclick="toggleMedico()" style="cursor:pointer;display:flex;gap:10px;">
+      <img src="images/doctor-teo.jpg" style="width:60px;height:60px;border-radius:50%;">
+      <div>
+        <strong>Dr. Hazelnut Teo</strong><br>
+        <small>Cardiología Emocional</small>
+      </div>
+    </div>
 
-<h4>Agregar Examen</h4>
-<input id="examNombre" placeholder="Examen">
-<input id="examFecha" type="datetime-local">
-<button onclick="agregarExamen()">Guardar</button>
+    <div id="infoMedico" class="info-box" style="display:none;">
+      Especialista en contención emocional y regaloneo terapéutico.
+    </div>
 
-<h4>Toma de Presión</h4>
-<input id="p1" placeholder="Medición 1">
-<input id="p2" placeholder="Medición 2">
-<input id="p3" placeholder="Medición 3">
-<button onclick="agregarPresion()">Guardar</button>
+    <hr>
+    <h4>Medicación Actual</h4>
+    <div class="info-box">
+      <ul>
+        <li>Languetazos terapéuticos a demanda</li>
+        <li>Té caliente matinal y vespertino</li>
+        <li>Abrazos controlados</li>
+      </ul>
+    </div>
 
-<p id="confirmacion" class="confirm"></p>
-</section>
+    <hr>
+    <h4>Reserva de Visitas</h4>
+    <button onclick="mostrarCalendly()">Reservar visita</button>
+
+    <div id="calendly" style="display:none;margin-top:15px;">
+      <iframe src="https://calendly.com/mfrq89/30min" height="600"></iframe>
+    </div>
+
+  </div>
+</div>
+
+<!-- EQUIPO -->
+<div id="equipo" class="section">
+  <h3>Equipo a Cargo</h3>
+  <p><strong>Director:</strong> Emilio Riquelme Ramirez</p>
+  <p><strong>Contacto:</strong> +56 9 9797 5998</p>
+  <hr>
+  <p>Soporte emocional: Carboncito & Negranieves 🐾</p>
+</div>
+
+<!-- UBICACIÓN -->
+<div id="ubicacion" class="section">
+  <h3>Ubicación</h3>
+  <p>Pasaje Cerro Cordillera 4686, Peñaflor</p>
+  <iframe 
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.0858591025353!2d-70.88335822437418!3d-33.60307667332938"
+    height="300">
+  </iframe>
+</div>
+
+</div>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBhN4t3uGfDwRZwN9r_k7egf5PjssfofJI",
-  authDomain: "residencial-6b6b7.firebaseapp.com",
-  databaseURL: "https://residencial-6b6b7-default-rtdb.firebaseio.com",
-  projectId: "residencial-6b6b7",
-  storageBucket: "residencial-6b6b7.appspot.com",
-  messagingSenderId: "171840259391",
-  appId: "1:171840259391:web:c8d26aec2fc91f8058bf8a"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const PACIENTE_RUT = "6921444-4";
+const PACIENTE_FECHA = "1951-01-06";
 
 function login() {
-  const rut = document.getElementById("rut").value;
-  const fecha = document.getElementById("fecha").value;
-
-  if (rut === "6921444-4" && fecha === "1951-01-06") {
+  if (
+    document.getElementById("rut").value === PACIENTE_RUT &&
+    document.getElementById("fecha").value === PACIENTE_FECHA
+  ) {
     document.getElementById("login").style.display = "none";
-    document.getElementById("paciente").style.display = "block";
-    cargarDatos();
+    document.getElementById("ficha").style.display = "block";
   } else {
-    document.getElementById("loginError").innerText = "Datos incorrectos";
+    alert("Datos incorrectos");
   }
 }
 
-function verDoctor() {
-  alert("Dr. Hazelnut Teo\nEspecialista en cariño, contención y abrazos terapéuticos 🫶");
+function toggleMedico() {
+  const m = document.getElementById("infoMedico");
+  m.style.display = m.style.display === "none" ? "block" : "none";
 }
 
-/* ===== AGREGAR ===== */
-function agregarMedicacion() {
-  db.ref("medicacion").push({
-    nombre: medNombre.value,
-    horario: medHorario.value
-  });
-  confirmar("Medicamento guardado");
+function mostrarCalendly() {
+  document.getElementById("calendly").style.display = "block";
 }
 
-function agregarControl() {
-  db.ref("controles").push({
-    nombre: controlNombre.value,
-    fecha: controlFecha.value
-  });
-  confirmar("Control guardado");
-}
-
-function agregarExamen() {
-  db.ref("examenes").push({
-    nombre: examNombre.value,
-    fecha: examFecha.value
-  });
-  confirmar("Examen guardado");
-}
-
-function agregarPresion() {
-  db.ref("presion").push({
-    m1: p1.value,
-    m2: p2.value,
-    m3: p3.value,
-    fecha: new Date().toLocaleString()
-  });
-  confirmar("Presión registrada");
-}
-
-/* ===== CARGAR ===== */
-function cargarDatos() {
-  cargar("medicacion", "listaMedicacion", d => `${d.nombre} - ${d.horario}`);
-  cargar("controles", "listaControles", d => `${d.nombre} (${d.fecha})`);
-  cargar("examenes", "listaExamenes", d => `${d.nombre} (${d.fecha})`);
-  cargar("presion", "listaPresion", d => 
-    `🕒 ${d.fecha}: ${d.m1} / ${d.m2} / ${d.m3}`);
-}
-
-function cargar(ruta, listaId, formato) {
-  const ul = document.getElementById(listaId);
-  db.ref(ruta).on("value", snap => {
-    ul.innerHTML = "";
-    snap.forEach(s => {
-      const li = document.createElement("li");
-      li.innerHTML = formato(s.val()) +
-        ` <button class="danger" onclick="eliminar('${ruta}','${s.key}')">X</button>`;
-      ul.appendChild(li);
-    });
-  });
-}
-
-function eliminar(ruta, key) {
-  if (confirm("¿Eliminar registro?")) {
-    db.ref(`${ruta}/${key}`).remove();
-  }
-}
-
-function confirmar(msg) {
-  document.getElementById("confirmacion").innerText = msg;
-  setTimeout(()=>confirmacion.innerText="", 3000);
+function openTab(id, el) {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".nav div").forEach(n => n.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  el.classList.add("active");
 }
 </script>
 
